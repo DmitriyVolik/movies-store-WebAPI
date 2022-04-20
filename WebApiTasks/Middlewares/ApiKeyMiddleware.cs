@@ -18,7 +18,7 @@ public class ApiKeyMiddleware
     {
         if (context.Request.Headers["ApiKey"] != _apiKey)
         {
-            context.Response.StatusCode = 401;
+            context.Response.StatusCode = 403;
             return;
         }
 
