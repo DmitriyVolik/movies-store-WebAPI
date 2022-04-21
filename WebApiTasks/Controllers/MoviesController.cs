@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApiTasks.ActionFilters;
 using WebApiTasks.Models;
 using WebApiTasks.Services;
-using WebApiTasks.ActionFilters;
 
 namespace WebApiTasks.Controllers;
 
@@ -10,7 +10,6 @@ namespace WebApiTasks.Controllers;
 [Route("[controller]")]
 public class MoviesController : ControllerBase
 {
-
     private readonly ILogger<MoviesController> _logger;
 
     private readonly MoviesService _moviesService;
@@ -26,27 +25,24 @@ public class MoviesController : ControllerBase
     {
         return Ok(_moviesService.GetAllMovies());
     }
-    
+
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
     {
         var movie = _moviesService.GetMovieById(id);
 
-        if (movie is null)
-        {
-            return NotFound("Incorrect id");
-        }
-        
+        if (movie is null) return NotFound("Incorrect id");
+
         return Ok(movie);
     }
-    
+
     [HttpPost]
     public IActionResult Post(Movie movie)
     {
         _moviesService.AddMovie(movie);
         return Ok(movie);
     }
-    
+
     [HttpPatch("{id}")]
     public IActionResult Patch(Guid id, Movie movie)
     {
@@ -62,7 +58,7 @@ public class MoviesController : ControllerBase
         movie.Id = id;
         return Ok(movie);
     }
-    
+
     [HttpDelete("{id}")]
     public IActionResult Delete(Guid id)
     {
@@ -74,7 +70,7 @@ public class MoviesController : ControllerBase
         {
             return NotFound();
         }
-        
+
         return Ok();
     }
 }

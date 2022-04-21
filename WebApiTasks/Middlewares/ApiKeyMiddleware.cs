@@ -1,13 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace WebApiTasks.Middlewares;
 
 public class ApiKeyMiddleware
 {
     private readonly RequestDelegate _next;
-    
-    private string _apiKey;
-    
+
+    private readonly string _apiKey;
+
     public ApiKeyMiddleware(RequestDelegate next, string apiKey)
     {
         _next = next;
@@ -16,7 +14,7 @@ public class ApiKeyMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if (context.Request.Headers["ApiKey"] != _apiKey)
+        if (context.Request.Headers["api_key"] != _apiKey)
         {
             context.Response.StatusCode = 403;
             return;

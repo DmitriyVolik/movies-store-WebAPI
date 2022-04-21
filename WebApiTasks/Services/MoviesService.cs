@@ -10,17 +10,17 @@ public class MoviesService
     {
         _movies = new List<Movie>();
     }
-    
+
     public IEnumerable<Movie> GetAllMovies()
     {
         return _movies;
     }
-    
+
     public Movie? GetMovieById(Guid id)
     {
         return _movies.FirstOrDefault(x => x.Id == id);
     }
-    
+
     public void AddMovie(Movie movie)
     {
         movie.Id = Guid.NewGuid();
@@ -29,18 +29,16 @@ public class MoviesService
 
     public void DeleteMovie(Guid id)
     {
-        _movies.Remove(_movies.First(x=>x.Id==id));
+        _movies.Remove(_movies.First(x => x.Id == id));
     }
-    
-    public Movie UpdateMovie(Guid id, Movie movieUpdate)
+
+    public void UpdateMovie(Guid id, Movie movieUpdate)
     {
-        var movie = _movies.First(x=>x.Id==id);
-        
+        var movie = _movies.First(x => x.Id == id);
+
         movie.Title = movieUpdate.Title;
         movie.Description = movieUpdate.Description;
         movie.Genres = movieUpdate.Genres;
         movie.ReleaseDate = movieUpdate.ReleaseDate;
-
-        return movie;
     }
 }

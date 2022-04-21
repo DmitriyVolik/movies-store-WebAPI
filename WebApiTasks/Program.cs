@@ -22,7 +22,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<ApiKeyMiddleware>(builder.Configuration["ApiKey"]);
+app.UseMiddleware<ApiKeyMiddleware>(builder.Configuration["api_key"]);
 
 app.UseAuthorization();
  
