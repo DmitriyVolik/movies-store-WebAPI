@@ -10,13 +10,10 @@ namespace WebApiTasks.Controllers;
 [Route("[controller]")]
 public class MoviesController : ControllerBase
 {
-    private readonly ILogger<MoviesController> _logger;
-
     private readonly MoviesService _moviesService;
 
-    public MoviesController(ILogger<MoviesController> logger, MoviesService moviesService)
+    public MoviesController(MoviesService moviesService)
     {
-        _logger = logger;
         _moviesService = moviesService;
     }
 

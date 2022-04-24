@@ -1,3 +1,5 @@
+using WebApiTasks.Enums;
+
 namespace WebApiTasks.Models;
 
 public class Movie
@@ -11,16 +13,4 @@ public class Movie
     public List<Genre> Genres { get; set; }
 
     public DateTime ReleaseDate { get; set; }
-}
-
-public enum Genre
-{
-    Action,
-    Comedy,
-    Drama,
-    Fantasy,
-    Horror,
-    Mystery,
-    Romance,
-    Thriller
 }
