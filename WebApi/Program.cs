@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using BLL.Services;
 using DAL;
+using DAL.DB;
 using Microsoft.EntityFrameworkCore;
 using WebApiTasks.Middlewares;
 

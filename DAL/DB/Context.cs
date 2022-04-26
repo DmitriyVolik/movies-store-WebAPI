@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Models.Enums;
 
-namespace DAL;
+namespace DAL.DB;
 
 public class Context : DbContext
 {

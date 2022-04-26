@@ -7,37 +7,38 @@ namespace BLL.Services;
 
 public class MovieService
 {
-    private readonly IMovieRepository _moviesRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public MovieService(IMovieRepository moviesRepository)
+    public MovieService(IUnitOfWork unitOfWork)
     {
-        _moviesRepository = moviesRepository;
+        _unitOfWork = unitOfWork;
     }
     
     public void AddMovie(MovieDTO movie)
     {
-        _moviesRepository.AddMovie(movie);
+        _unitOfWork.Movies.AddMovie(movie);
     }
 
     public IEnumerable<MovieDTO> GetMovies()
     {
-        return _moviesRepository.GetMovies().Select(MovieToDto);
+        return _unitOfWork.Movies.GetMovies().Select(MovieToDto);
     }
 
     public MovieDTO? GetMovieById(Guid id)
     {
-        var movie = _moviesRepository.GetMovieById(id);
+        var movie = _unitOfWork.Movies.GetMovieById(id);
         return movie is null ? null : MovieToDto(movie);
     }
 
     public void DeleteMovie(Guid id)
     {
-        _moviesRepository.DeleteMovie(id);
+        _unitOfWork.Movies.DeleteMovie(id);
     }
     
     public void UpdateMovie(Guid id, MovieDTO movie)
     {
-        _moviesRepository.UpdateMovie(id, movie);
+        movie.Id = id;
+        _unitOfWork.Movies.UpdateMovie(movie);
     }
 
     private static MovieDTO MovieToDto(Movie movie)

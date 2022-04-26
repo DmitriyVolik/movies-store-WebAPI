@@ -1,3 +1,4 @@
+using DAL.DB;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -5,9 +6,9 @@ using Models.DTO;
 
 namespace DAL.Repositories;
 
-internal class MovieRepository : IMovieRepository
+internal class MovieRepository : IRepository<Movie, MovieDTO>
 {
-    private Context _context;
+    private readonly Context _context;
     
     public MovieRepository(Context context)
     {
@@ -65,9 +66,9 @@ internal class MovieRepository : IMovieRepository
             .FirstOrDefault(x => x.Id == id);
     }
 
-    public void UpdateMovie(Guid id, MovieDTO movieUpdate)
+    public void UpdateMovie(MovieDTO movieUpdate)
     {
-        var movie = GetMovieById(id);  
+        var movie = GetMovieById(movieUpdate.Id);  
 
         if (movie is null)
         {
@@ -94,7 +95,7 @@ internal class MovieRepository : IMovieRepository
     public void DeleteMovie(Guid id)
     {
         var movie = _context.Movies.FirstOrDefault(x => x.Id == id);
-        
+
         if (movie is null)
         {
             throw new Exception("Incorrect id");
