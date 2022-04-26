@@ -1,10 +1,11 @@
 using BLL.Models;
 using BLL.Models.DTO;
+using BLL.Models.Enums;
 using DAL.Models;
 
 namespace DAL.Services;
 
-public class MovieRepository : IMovieRepository
+internal class MovieRepository : IMovieRepository
 {
     private Context _context;
     
@@ -15,27 +16,29 @@ public class MovieRepository : IMovieRepository
 
     public void AddMovie(MovieDTO movie)
     {
-        Console.WriteLine(111);
         var newMovie = new Movie
         {
             Id = new Guid(),
             Title = movie.Title,
             Description = movie.Description,
-            ReleaseDate = movie.ReleaseDate
+            ReleaseDate = movie.ReleaseDate,
+            Director = _context.Directors.FirstOrDefault(x=>x.FullName == movie.Director)
         };
-        newMovie.Genres = new List<MovieGenre> {new MovieGenre(){Genre = _context.Genres.First()}};
+
+        var genres = new List<MovieGenre>();
         
-        try
+        foreach (var item in movie.Genres)
         {
-            _context.Add(newMovie);
-            _context.SaveChanges();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
+            genres.Add(new MovieGenre()
+            {
+                Genre = _context.Genres.Find(item)
+            });
         }
         
+        newMovie.Genres = genres;
+        
+        _context.Add(newMovie);
+        _context.SaveChanges();
     }
 
     public IEnumerable<Movie> GetMovies()

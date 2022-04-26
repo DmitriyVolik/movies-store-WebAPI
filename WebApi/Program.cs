@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using DAL;
 using DAL.Models;
 using DAL.Services;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddDbContext<Context>
 (options => options.UseSqlServer
     (builder.Configuration.GetConnectionString("Database")));
-builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddDalServices();
 
 var app = builder.Build();
 

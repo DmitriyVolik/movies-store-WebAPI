@@ -6,6 +6,8 @@ public class Comment
 {
     [Key]
     public Guid Id { get; set; }
+    
+    public Movie Movie { get; set; }
 
     public Guid? ParentId { get; set; }
     
