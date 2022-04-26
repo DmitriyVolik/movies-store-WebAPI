@@ -1,9 +1,9 @@
-using BLL.Models;
-using BLL.Models.DTO;
-using BLL.Models.Enums;
-using DAL.Models;
+using DAL.Entities;
+using DAL.Repositories.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using Models.DTO;
 
-namespace DAL.Services;
+namespace DAL.Repositories;
 
 internal class MovieRepository : IMovieRepository
 {
@@ -22,37 +22,85 @@ internal class MovieRepository : IMovieRepository
             Title = movie.Title,
             Description = movie.Description,
             ReleaseDate = movie.ReleaseDate,
-            Director = _context.Directors.FirstOrDefault(x=>x.FullName == movie.Director)
         };
 
-        var genres = new List<MovieGenre>();
-        
-        foreach (var item in movie.Genres)
+        var director = _context.Directors
+            .FirstOrDefault(x => x.FullName == movie.Director);
+
+        if (director is null)
         {
-            genres.Add(new MovieGenre()
+            throw new Exception("Incorrect director");
+        }
+
+        newMovie.Director = director;
+
+        var genres = movie.Genres
+            .Select(item => new MovieGenre()
             {
                 Genre = _context.Genres.Find(item)
-            });
-        }
-        
+            }).ToList();
+
         newMovie.Genres = genres;
         
         _context.Add(newMovie);
         _context.SaveChanges();
+
+        movie.Id = newMovie.Id;
     }
 
     public IEnumerable<Movie> GetMovies()
     {
-        throw new NotImplementedException();
+        return _context.Movies
+            .Include(x=>x.Director)
+            .Include(x => x.Genres)
+            .ThenInclude(x => x.Genre);
     }
 
-    public Movie GetMovieById()
+    public Movie? GetMovieById(Guid id)
     {
-        throw new NotImplementedException();
+        return _context.Movies
+            .Include(x=>x.Director)
+            .Include(x => x.Genres)
+            .ThenInclude(x => x.Genre)
+            .FirstOrDefault(x => x.Id == id);
     }
 
-    public void DeleteMovie(int id)
+    public void UpdateMovie(Guid id, MovieDTO movieUpdate)
     {
-        throw new NotImplementedException();
+        var movie = GetMovieById(id);  
+
+        if (movie is null)
+        {
+            throw new Exception("Incorrect id");
+        }
+        
+        movie.Title = movieUpdate.Title;
+        movie.Description = movieUpdate.Description;
+        movie.ReleaseDate = movieUpdate.ReleaseDate;
+    
+        var genres = movieUpdate.Genres
+            .Select(item => new MovieGenre()
+            {
+                Genre = _context.Genres.Find(item)
+            }).ToList();
+        _context.MovieGenres.RemoveRange(movie.Genres);
+        movie.Genres = genres;
+        
+        _context.SaveChanges();
+
+        movieUpdate.Id = movie.Id;
+    }
+
+    public void DeleteMovie(Guid id)
+    {
+        var movie = _context.Movies.FirstOrDefault(x => x.Id == id);
+        
+        if (movie is null)
+        {
+            throw new Exception("Incorrect id");
+        }
+        
+        _context.Movies.Remove(movie);
+        _context.SaveChanges();
     }
 }

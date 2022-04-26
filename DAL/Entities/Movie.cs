@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using BLL.Models.Enums;
 
-namespace BLL.Models;
+namespace DAL.Entities;
 
 public class Movie
 {

@@ -1,10 +1,8 @@
 using System.Text.Json.Serialization;
+using BLL.Services;
 using DAL;
-using DAL.Models;
-using DAL.Services;
 using Microsoft.EntityFrameworkCore;
 using WebApiTasks.Middlewares;
-using WebApiTasks.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +19,9 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 });
 builder.Services.AddDbContext<Context>
 (options => options.UseSqlServer
-    (builder.Configuration.GetConnectionString("Database")));
+    (builder.Configuration.GetConnectionString("Database")!));
 builder.Services.AddDalServices();
+builder.Services.AddScoped<MovieService>();
 
 var app = builder.Build();
 

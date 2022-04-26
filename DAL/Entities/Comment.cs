@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BLL.Models;
+namespace DAL.Entities;
 
 public class Comment
 {

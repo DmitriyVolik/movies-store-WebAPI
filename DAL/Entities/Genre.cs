@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using BLL.Models.Enums;
+using Models.Enums;
 
-namespace BLL.Models;
+namespace DAL.Entities;
 
 public class Genre
 {

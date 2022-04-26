@@ -1,4 +1,4 @@
-namespace BLL.Models.Enums;
+namespace Models.Enums;
 
 public enum GenreEnum : int
 {

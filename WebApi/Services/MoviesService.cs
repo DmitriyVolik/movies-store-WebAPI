@@ -1,5 +1,4 @@
-using BLL.Models;
-using DAL.Models;
+using DAL.Entities;
 
 namespace WebApiTasks.Services;
 

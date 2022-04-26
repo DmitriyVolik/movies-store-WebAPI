@@ -1,9 +1,11 @@
-using BLL.Models.Enums;
+using Models.Enums;
 
-namespace BLL.Models.DTO;
+namespace Models.DTO;
 
 public class MovieDTO
 {
+    public Guid Id { get; set; }
+
     public string Title { get; set; }
 
     public string Description { get; set; }

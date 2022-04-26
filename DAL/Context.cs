@@ -1,8 +1,8 @@
-﻿using BLL.Models;
-using BLL.Models.Enums;
+﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using Models.Enums;
 
-namespace DAL.Models;
+namespace DAL;
 
 public class Context : DbContext
 {

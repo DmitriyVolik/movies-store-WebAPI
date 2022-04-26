@@ -1,4 +1,4 @@
-namespace BLL.Models;
+namespace DAL.Entities;
 
 public class MovieGenre
 {

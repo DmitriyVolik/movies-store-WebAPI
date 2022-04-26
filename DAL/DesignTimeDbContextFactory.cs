@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace DAL.Models;
+namespace DAL;
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Context> 
 { 
@@ -12,7 +12,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Context>
         IConfigurationRoot configuration = new ConfigurationBuilder().AddJsonFile(settingsPath).Build();
         var builder = new DbContextOptionsBuilder<Context>();
 
-        builder.UseSqlServer(configuration.GetConnectionString("Database")); 
+        builder.UseSqlServer(configuration.GetConnectionString("Database")!); 
         return new Context(builder.Options); 
     } 
 }

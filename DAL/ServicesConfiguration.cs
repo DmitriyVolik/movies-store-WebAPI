@@ -1,5 +1,5 @@
-using DAL.Models;
-using DAL.Services;
+using DAL.Repositories;
+using DAL.Repositories.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DAL;
