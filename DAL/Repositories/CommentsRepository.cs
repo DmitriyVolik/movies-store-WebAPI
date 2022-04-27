@@ -14,9 +14,9 @@ public class CommentsRepository : ICommentsRepository
     {
         _context = context;
     }
-    public void Add(CommentDTO comment)
+    public void Add(CommentRequestDTO commentRequest)
     {
-        var movie = _context.Movies.FirstOrDefault(x => x.Id == comment.MovieId);
+        var movie = _context.Movies.FirstOrDefault(x => x.Id == commentRequest.MovieId);
         if (movie is null)
         {
             throw new Exception("Incorrect movieId");
@@ -25,13 +25,13 @@ public class CommentsRepository : ICommentsRepository
         var newComment = new Comment
         {
             Id = Guid.NewGuid(),
-            ParentId = comment.ParentId,
-            Username = comment.Username,
-            Body = comment.Body,
+            ParentId = commentRequest.ParentId,
+            Username = commentRequest.Username,
+            Body = commentRequest.Body,
             Movie = movie
         };
 
-        comment.Id = newComment.Id;
+        commentRequest.Id = newComment.Id;
         
         _context.Comments.Add(newComment);
     }
@@ -56,7 +56,7 @@ public class CommentsRepository : ICommentsRepository
             .Where(x=>x.Movie.Id == id);
     }
 
-    public void Update(CommentDTO commentUpdate)
+    public void Update(CommentRequestDTO commentRequestUpdate)
     {
         throw new NotImplementedException();
     }

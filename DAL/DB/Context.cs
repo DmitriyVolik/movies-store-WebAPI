@@ -40,12 +40,19 @@ public sealed class Context : DbContext
         modelBuilder.Entity<Director>()
             .HasIndex(u => u.FullName)
             .IsUnique();
-        
+
+        // var cascadeFKs = modelBuilder.Model.GetEntityTypes()
+        //     .SelectMany(t => t.GetForeignKeys())
+        //     .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+        //
+        // foreach (var fk in cascadeFKs)
+        //     fk.DeleteBehavior = DeleteBehavior.Restrict;
+
         modelBuilder
             .Entity<Genre>()
             .Property(e => e.Id)
             .HasConversion<int>();
-        
+
         modelBuilder
             .Entity<Genre>().HasData(
                 Enum.GetValues(typeof(GenreEnum))

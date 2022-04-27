@@ -1,10 +1,8 @@
 using System.Text.Json.Serialization;
 using BLL.Services;
 using DAL;
-using DAL.DB;
-using DAL.Entities;
-using Microsoft.EntityFrameworkCore;
 using WebApiTasks.Middlewares;
+using WebApiTasks.Utils.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +16,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 {
     // serialize enums as strings in api responses (e.g. Role)
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    x.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy();
 });
 builder.Services.AddDalServices();
 builder.Services.AddScoped<MoviesService>();

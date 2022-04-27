@@ -10,7 +10,9 @@ public class Comment
     public Movie Movie { get; set; }
 
     public Guid ParentId { get; set; }
-    
+
+    public virtual Comment Parent { get; set; }
+
     public string Username { get; set; }
 
     public string Body { get; set; }

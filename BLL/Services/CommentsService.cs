@@ -13,30 +13,30 @@ public class CommentsService
         _unitOfWork = unitOfWork;
     }
     
-    public void AddComment(CommentDTO comment)
+    public void AddComment(CommentRequestDTO commentRequest)
     {
-        if (comment.ParentId != Guid.Empty)
+        if (commentRequest.ParentId != Guid.Empty)
         {
-            var parentComment = GetCommentById(comment.ParentId);
+            var parentComment = GetCommentById(commentRequest.ParentId);
         
             if (parentComment is null)
             {
                 throw new Exception("Incorrect parentId");
             }
             
-            comment.Body = comment.Body
+            commentRequest.Body = commentRequest.Body
                 .Insert(0, "[" + parentComment.Username + "]");
         }
 
-        _unitOfWork.Comments.Add(comment);
+        _unitOfWork.Comments.Add(commentRequest);
         _unitOfWork.Save();
     }
 
-    public IEnumerable<CommentMinDTO> GetCommentsByMovieId(Guid id)
+    public IEnumerable<CommentResponseDTO> GetCommentsByMovieId(Guid id)
     {
         var comments = _unitOfWork.Comments.GetCommentsByMovieId(id);
 
-         var commentsMinDto = new List<CommentMinDTO>();
+         var commentsMinDto = new List<CommentResponseDTO>();
         
          foreach (var item in comments)
          {
@@ -55,15 +55,15 @@ public class CommentsService
          return commentsMinDto;
     }
 
-    private CommentDTO? GetCommentById(Guid id)
+    private CommentRequestDTO? GetCommentById(Guid id)
     {
         var comment = _unitOfWork.Comments.GetById(id);
         return comment is null ? null : CommentToDto(comment);
     }
 
-    private static CommentDTO CommentToDto(Comment comment)
+    private static CommentRequestDTO CommentToDto(Comment comment)
     {
-        return new CommentDTO()
+        return new CommentRequestDTO()
         {
             Id = comment.Id,
             ParentId = comment.ParentId,
@@ -73,9 +73,9 @@ public class CommentsService
         };
     }
     
-    private static CommentMinDTO CommentToMinDto(Comment comment)
+    private static CommentResponseDTO CommentToMinDto(Comment comment)
     {
-        return new CommentMinDTO()
+        return new CommentResponseDTO()
         {
             Id = comment.Id,
             Username = comment.Username,

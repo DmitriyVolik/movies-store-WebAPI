@@ -2,12 +2,11 @@ using System.Text.Json.Serialization;
 
 namespace Models.DTO;
 
-public class CommentMinDTO
+public class CommentResponseDTO
 {
     public Guid Id { get; set; }
-
-    [JsonPropertyName("parent_comment")]
-    public CommentMinDTO ParentComment { get; set; }
+    
+    public CommentResponseDTO ParentComment { get; set; }
 
     public string Username { get; set; }
 

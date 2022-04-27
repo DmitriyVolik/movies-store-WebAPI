@@ -18,24 +18,24 @@ public class CommentsController : ControllerBase
     }
     
     [HttpGet("{movieId}")]
-    public IEnumerable<CommentMinDTO> Get(Guid movieId)
+    public IEnumerable<CommentResponseDTO> Get(Guid movieId)
     {
         return _commentsService.GetCommentsByMovieId(movieId);
     }
 
     [HttpPost]
-    public IActionResult Post(CommentDTO comment)
+    public IActionResult Post(CommentRequestDTO commentRequest)
     {
         // try
         // {
-             _commentsService.AddComment(comment);
+             _commentsService.AddComment(commentRequest);
         // }
         // catch (Exception e)
         // {
         //     return BadRequest(e.Message);
         // }
         
-        return Ok(comment);
+        return Ok(commentRequest);
     }
 
 }
