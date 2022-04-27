@@ -1,4 +1,4 @@
-﻿namespace WebApiTasks.Utils.Errors
+﻿namespace WebAPI.Utils.Errors
 {
     public class ErrorDetails
     {

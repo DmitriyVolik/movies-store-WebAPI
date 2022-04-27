@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApiTasks.Utils.Errors
+namespace WebAPI.Utils.Errors
 {
     public class ValidationProblemDetails : ProblemDetails
     {

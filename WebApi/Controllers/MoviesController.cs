@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
-using WebApiTasks.ActionFilters;
+using WebAPI.ActionFilters;
 using MoviesService = BLL.Services.MoviesService;
 
-namespace WebApiTasks.Controllers;
+namespace WebAPI.Controllers;
 
 [ApiController]
 [PerformanceActionFilter]

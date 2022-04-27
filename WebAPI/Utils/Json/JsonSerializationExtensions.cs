@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace WebApiTasks.Utils.Json
+namespace WebAPI.Utils.Json
 {
     public static class JsonSerializationExtensions
     {

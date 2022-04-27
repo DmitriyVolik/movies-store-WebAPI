@@ -1,4 +1,4 @@
-namespace WebApiTasks.Controllers;
+namespace WebAPI.Controllers;
 
 public class DirectorsController
 {

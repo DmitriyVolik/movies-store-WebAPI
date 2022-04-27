@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace WebApiTasks.Utils.Json
+namespace WebAPI.Utils.Json
 {
     public class SnakeCaseNamingPolicy : JsonNamingPolicy
     {

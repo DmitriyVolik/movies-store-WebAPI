@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApiTasks.Utils.Json;
+using WebAPI.Utils.Json;
 
-namespace WebApiTasks.Utils.Errors
+namespace WebAPI.Utils.Errors
 {
     public class ValidationProblemDetailsResult : IActionResult
     {

@@ -1,9 +1,9 @@
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
-using WebApiTasks.ActionFilters;
+using WebAPI.ActionFilters;
 
-namespace WebApiTasks.Controllers;
+namespace WebAPI.Controllers;
 
 [ApiController]
 [PerformanceActionFilter]

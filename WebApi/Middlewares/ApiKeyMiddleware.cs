@@ -1,4 +1,4 @@
-namespace WebApiTasks.Middlewares;
+namespace WebAPI.Middlewares;
 
 public class ApiKeyMiddleware
 {

@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 using BLL.Services;
 using DAL;
-using WebApiTasks.Middlewares;
-using WebApiTasks.Utils.Json;
+using WebAPI.Middlewares;
+using WebAPI.Utils.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
