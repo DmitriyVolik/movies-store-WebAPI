@@ -1,0 +1,68 @@
+using DAL.DB;
+using DAL.Entities;
+using DAL.Repositories.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using Models.DTO;
+
+namespace DAL.Repositories;
+
+public class CommentsRepository : ICommentsRepository
+{
+    private readonly Context _context;
+    
+    public CommentsRepository(Context context)
+    {
+        _context = context;
+    }
+    public void Add(CommentDTO comment)
+    {
+        var movie = _context.Movies.FirstOrDefault(x => x.Id == comment.MovieId);
+        if (movie is null)
+        {
+            throw new Exception("Incorrect movieId");
+        }
+
+        var newComment = new Comment
+        {
+            Id = Guid.NewGuid(),
+            ParentId = comment.ParentId,
+            Username = comment.Username,
+            Body = comment.Body,
+            Movie = movie
+        };
+
+        comment.Id = newComment.Id;
+        
+        _context.Comments.Add(newComment);
+    }
+
+    public IEnumerable<Comment> Get()
+    {
+        return _context.Comments
+            .Include(x => x.Movie);
+    }
+
+    public Comment? GetById(Guid id)
+    {
+        return _context.Comments
+            .Include(x=>x.Movie)
+            .FirstOrDefault(x => x.Id == id);
+    }
+    
+    public IEnumerable<Comment> GetCommentsByMovieId(Guid id)
+    {
+        return _context.Comments
+            .Include(x=>x.Movie)
+            .Where(x=>x.Movie.Id == id);
+    }
+
+    public void Update(CommentDTO commentUpdate)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+}

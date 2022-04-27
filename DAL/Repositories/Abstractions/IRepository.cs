@@ -1,14 +1,16 @@
+using DAL.DB;
+
 namespace DAL.Repositories.Abstractions;
 
 public interface IRepository<out T, in TDto>
 {
-    public void AddMovie(TDto movie);
+    public void Add(TDto movie);
     
-    public IEnumerable<T> GetMovies();
+    public IEnumerable<T> Get();
     
-    public T? GetMovieById(Guid id);
+    public T? GetById(Guid id);
 
-    public void UpdateMovie(TDto movieUpdate);
+    public void Update(TDto movieUpdate);
     
-    public void DeleteMovie(Guid id);
+    public void Delete(Guid id);
 }

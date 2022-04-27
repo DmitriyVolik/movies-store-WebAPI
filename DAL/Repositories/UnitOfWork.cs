@@ -9,19 +9,34 @@ internal class UnitOfWork : IUnitOfWork
 {
     private readonly Context _context = new Context();
     
-    private MovieRepository _movieRepository;
+    private MovieRepository _moviesRepository;
+    
+    private CommentsRepository _commentsRepository;
 
     public IRepository<Movie, MovieDTO> Movies
     {
         get
         {
-            if (_movieRepository == null)
+            if (_moviesRepository == null)
             {
-                _movieRepository = new MovieRepository(_context);
+                _moviesRepository = new MovieRepository(_context);
             }
-            return _movieRepository;
+            return _moviesRepository;
         }
     }
+    
+    public ICommentsRepository Comments
+    {
+        get
+        {
+            if (_commentsRepository == null)
+            {
+                _commentsRepository = new CommentsRepository(_context);
+            }
+            return _commentsRepository;
+        }
+    }
+    
 
     public void Save()
     {

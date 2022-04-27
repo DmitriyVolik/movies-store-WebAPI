@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using BLL.Services;
 using DAL;
 using DAL.DB;
+using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using WebApiTasks.Middlewares;
 
@@ -19,7 +20,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 builder.Services.AddDalServices();
-builder.Services.AddScoped<MovieService>();
+builder.Services.AddScoped<MoviesService>();
+builder.Services.AddScoped<CommentsService>();
 
 var app = builder.Build();
 

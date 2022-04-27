@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Models.Enums;
 
 namespace Models.DTO;
@@ -14,6 +15,7 @@ public class MovieDTO
 
     public string Director { get; set; }
 
+    [JsonPropertyName("release_date")]
     public DateTime ReleaseDate { get; set; }
 }
 

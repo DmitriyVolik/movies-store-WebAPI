@@ -15,16 +15,8 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
         _context = context;
     }
 
-    public void AddMovie(MovieDTO movie)
+    public void Add(MovieDTO movie)
     {
-        var newMovie = new Movie
-        {
-            Id = new Guid(),
-            Title = movie.Title,
-            Description = movie.Description,
-            ReleaseDate = movie.ReleaseDate,
-        };
-
         var director = _context.Directors
             .FirstOrDefault(x => x.FullName == movie.Director);
 
@@ -32,8 +24,15 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
         {
             throw new Exception("Incorrect director");
         }
-
-        newMovie.Director = director;
+        
+        var newMovie = new Movie
+        {
+            Id = new Guid(),
+            Title = movie.Title,
+            Description = movie.Description,
+            ReleaseDate = movie.ReleaseDate,
+            Director = director
+        };
 
         var genres = movie.Genres
             .Select(item => new MovieGenre()
@@ -45,7 +44,7 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
         _context.Add(newMovie);
     }
 
-    public IEnumerable<Movie> GetMovies()
+    public IEnumerable<Movie> Get()
     {
         return _context.Movies
             .Include(x=>x.Director)
@@ -53,7 +52,7 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
             .ThenInclude(x => x.Genre);
     }
 
-    public Movie? GetMovieById(Guid id)
+    public Movie? GetById(Guid id)
     {
         return _context.Movies
             .Include(x=>x.Director)
@@ -62,9 +61,9 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
             .FirstOrDefault(x => x.Id == id);
     }
 
-    public void UpdateMovie(MovieDTO movieUpdate)
+    public void Update(MovieDTO movieUpdate)
     {
-        var movie = GetMovieById(movieUpdate.Id);  
+        var movie = GetById(movieUpdate.Id);  
 
         if (movie is null)
         {
@@ -84,7 +83,7 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
         movie.Genres = genres;
     }
 
-    public void DeleteMovie(Guid id)
+    public void Delete(Guid id)
     {
         var movie = _context.Movies.FirstOrDefault(x => x.Id == id);
 

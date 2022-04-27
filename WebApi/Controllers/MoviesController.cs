@@ -1,12 +1,7 @@
-using BLL.Services;
-using DAL;
-using DAL.Entities;
-using DAL.Repositories.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
-using Models.Enums;
 using WebApiTasks.ActionFilters;
-using WebApiTasks.Services;
+using MoviesService = BLL.Services.MoviesService;
 
 namespace WebApiTasks.Controllers;
 
@@ -15,17 +10,17 @@ namespace WebApiTasks.Controllers;
 [Route("[controller]")]
 public class MoviesController : ControllerBase
 {
-    private readonly MovieService _moviesService;
+    private readonly MoviesService _moviesService;
 
-    public MoviesController(MovieService moviesService)
+    public MoviesController(MoviesService moviesService)
     {
         _moviesService = moviesService;
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public IEnumerable<MovieDTO> Get()
     {
-        return Ok(_moviesService.GetMovies());
+        return _moviesService.GetMovies();
     }
 
     [HttpGet("{id}")]
