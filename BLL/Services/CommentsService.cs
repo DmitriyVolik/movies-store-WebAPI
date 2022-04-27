@@ -41,7 +41,7 @@ public class CommentsService
          foreach (var item in comments)
          {
              var comment = CommentToMinDto(item);
-        
+             
              var parent = _unitOfWork.Comments.GetById(item.ParentId);
              
              if (parent is not null)
