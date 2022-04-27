@@ -41,6 +41,8 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
             }).ToList();
         newMovie.Genres = genres;
 
+        movie.Id = newMovie.Id;
+
         _context.Add(newMovie);
     }
 
@@ -52,7 +54,7 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
             .ThenInclude(x => x.Genre);
     }
 
-    public Movie? GetById(Guid id)
+    public Movie? GetById(Guid? id)
     {
         return _context.Movies
             .Include(x=>x.Director)

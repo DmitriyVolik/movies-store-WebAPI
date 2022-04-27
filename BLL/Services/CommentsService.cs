@@ -1,3 +1,4 @@
+using BLL.Extensions;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Models.DTO;
@@ -15,7 +16,7 @@ public class CommentsService
     
     public void AddComment(CommentRequestDTO commentRequest)
     {
-        if (commentRequest.ParentId != Guid.Empty)
+        if (commentRequest.ParentId is not null)
         {
             var parentComment = GetCommentById(commentRequest.ParentId);
         
@@ -34,34 +35,23 @@ public class CommentsService
 
     public IEnumerable<CommentResponseDTO> GetCommentsByMovieId(Guid id)
     {
-        var comments = _unitOfWork.Comments.GetCommentsByMovieId(id);
+        var comments = _unitOfWork.Comments.GetCommentsByMovieId(id).ToList();
+        
+        ITree<Comment> virtualRootNode = comments.ToTree((parent, child) => child.ParentId == parent.Id);
+        List<ITree<Comment>> flattenedListOfFolderNodes = virtualRootNode.Children.Flatten(node => node.Children).ToList();
+        ITree<Comment> folderNode = flattenedListOfFolderNodes.First();
+        TreeManager.GetParents(folderNode);
 
-         var commentsMinDto = new List<CommentResponseDTO>();
-        
-         foreach (var item in comments)
-         {
-             var comment = CommentToMinDto(item);
-             
-             var parent = _unitOfWork.Comments.GetById(item.ParentId);
-             
-             if (parent is not null)
-             {
-                 comment.ParentComment = CommentToMinDto(parent);
-             }
-             
-             commentsMinDto.Add(comment);
-         }
-        
-         return commentsMinDto;
+        return comments.Select(CommentToResponseDto);
     }
 
-    private CommentRequestDTO? GetCommentById(Guid id)
+    private CommentResponseDTO? GetCommentById(Guid? id)
     {
         var comment = _unitOfWork.Comments.GetById(id);
-        return comment is null ? null : CommentToDto(comment);
+        return comment is null ? null : CommentToResponseDto(comment);
     }
 
-    private static CommentRequestDTO CommentToDto(Comment comment)
+    public static CommentRequestDTO CommentToRequestDto(Comment comment)
     {
         return new CommentRequestDTO()
         {
@@ -73,18 +63,27 @@ public class CommentsService
         };
     }
     
-    private static CommentResponseDTO CommentToMinDto(Comment comment)
+    public static CommentResponseDTO CommentToResponseDto(Comment comment)
     {
-        return new CommentResponseDTO()
+
+        var commentResponseDto = new CommentResponseDTO
         {
             Id = comment.Id,
             Username = comment.Username,
-            Body = comment.Body,
+            Body = comment.Body
         };
+
+        if (comment.Parent is not null)
+        {
+            commentResponseDto.ParentComment = CommentToResponseDto(comment.Parent);
+        }
+
+        return commentResponseDto;
     }
     
     ~CommentsService()
     {
         _unitOfWork.Dispose();
     }
+    
 }

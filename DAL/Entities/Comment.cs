@@ -9,9 +9,11 @@ public class Comment
     
     public Movie Movie { get; set; }
 
-    public Guid ParentId { get; set; }
-
-    public virtual Comment Parent { get; set; }
+    public Comment Parent { get; set; }
+    
+    public Guid? ParentId { get; set; }
+    
+    public ICollection<Comment> SubComments { get; } = new List<Comment>();
 
     public string Username { get; set; }
 

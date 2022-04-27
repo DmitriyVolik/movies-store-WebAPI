@@ -26,16 +26,15 @@ public class CommentsController : ControllerBase
     [HttpPost]
     public IActionResult Post(CommentRequestDTO commentRequest)
     {
-        // try
-        // {
+         try
+         {
              _commentsService.AddComment(commentRequest);
-        // }
-        // catch (Exception e)
-        // {
-        //     return BadRequest(e.Message);
-        // }
-        
-        return Ok(commentRequest);
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+         
+         return Ok(_commentsService);
     }
-
 }

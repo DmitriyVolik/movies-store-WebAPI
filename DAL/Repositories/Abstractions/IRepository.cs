@@ -8,7 +8,7 @@ public interface IRepository<out T, in TDto>
     
     public IEnumerable<T> Get();
     
-    public T? GetById(Guid id);
+    public T? GetById(Guid? id);
 
     public void Update(TDto movieUpdate);
     

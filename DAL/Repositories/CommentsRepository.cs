@@ -42,10 +42,12 @@ public class CommentsRepository : ICommentsRepository
             .Include(x => x.Movie);
     }
 
-    public Comment? GetById(Guid id)
+    public Comment? GetById(Guid? id)
     {
         return _context.Comments
             .Include(x=>x.Movie)
+            .Include(x=>x.Parent)
+            .ThenInclude(x=>x.Parent)
             .FirstOrDefault(x => x.Id == id);
     }
     
@@ -53,6 +55,7 @@ public class CommentsRepository : ICommentsRepository
     {
         return _context.Comments
             .Include(x=>x.Movie)
+            .Include(x=>x.SubComments)
             .Where(x=>x.Movie.Id == id);
     }
 

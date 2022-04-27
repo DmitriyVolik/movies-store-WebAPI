@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
 using BLL.Services;
 using DAL;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Middlewares;
+using WebAPI.Utils.Errors;
 using WebAPI.Utils.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,11 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     x.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy();
 });
+builder.Services
+    .Configure<ApiBehaviorOptions>(x =>
+    {
+        x.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult();
+    });
 builder.Services.AddDalServices();
 builder.Services.AddScoped<MoviesService>();
 builder.Services.AddScoped<CommentsService>();

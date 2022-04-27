@@ -8,7 +8,7 @@ public class CommentRequestDTO
     
     public Guid MovieId { get; set; }
     
-    public Guid ParentId { get; set; }
+    public Guid? ParentId { get; set; }
 
     public string Username { get; set; }
 
