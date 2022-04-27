@@ -17,6 +17,7 @@ public class MovieService
     public void AddMovie(MovieDTO movie)
     {
         _unitOfWork.Movies.AddMovie(movie);
+        _unitOfWork.Save();
     }
 
     public IEnumerable<MovieDTO> GetMovies()
@@ -33,12 +34,14 @@ public class MovieService
     public void DeleteMovie(Guid id)
     {
         _unitOfWork.Movies.DeleteMovie(id);
+        _unitOfWork.Save();
     }
     
     public void UpdateMovie(Guid id, MovieDTO movie)
     {
         movie.Id = id;
         _unitOfWork.Movies.UpdateMovie(movie);
+        _unitOfWork.Save();
     }
 
     private static MovieDTO MovieToDto(Movie movie)
@@ -59,5 +62,10 @@ public class MovieService
         }
 
         return movieDto;
+    }
+    
+    ~MovieService()
+    {
+        _unitOfWork.Dispose();
     }
 }

@@ -7,40 +7,39 @@ namespace DAL.Repositories;
 
 internal class UnitOfWork : IUnitOfWork
 {
-    private readonly Context _context;
+    private readonly Context _context = new Context();
     
-    private IRepository<Movie, MovieDTO> _movieRepository;
-
-    public UnitOfWork(Context context, IRepository<Movie, MovieDTO> movieRepository)
-    {
-        _context = context;
-        _movieRepository = movieRepository;
-    }
+    private MovieRepository _movieRepository;
 
     public IRepository<Movie, MovieDTO> Movies
     {
         get
         {
-            if (this._movieRepository == null)
+            if (_movieRepository == null)
             {
-                this._movieRepository = new MovieRepository(_context);
+                _movieRepository = new MovieRepository(_context);
             }
             return _movieRepository;
         }
+    }
+
+    public void Save()
+    {
+        _context.SaveChanges();
     }
 
     private bool _disposed = false;
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!this._disposed)
+        if (!_disposed)
         {
             if (disposing)
             {
                 _context.Dispose();
             }
-            this._disposed = true;
         }
+        _disposed = true;
     }
 
     public void Dispose()
@@ -49,4 +48,3 @@ internal class UnitOfWork : IUnitOfWork
         GC.SuppressFinalize(this);
     }
 }
-

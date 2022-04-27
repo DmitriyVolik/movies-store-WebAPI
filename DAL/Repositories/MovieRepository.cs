@@ -40,13 +40,9 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
             {
                 Genre = _context.Genres.Find(item)
             }).ToList();
-
         newMovie.Genres = genres;
-        
-        _context.Add(newMovie);
-        _context.SaveChanges();
 
-        movie.Id = newMovie.Id;
+        _context.Add(newMovie);
     }
 
     public IEnumerable<Movie> GetMovies()
@@ -86,10 +82,6 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
             }).ToList();
         _context.MovieGenres.RemoveRange(movie.Genres);
         movie.Genres = genres;
-        
-        _context.SaveChanges();
-
-        movieUpdate.Id = movie.Id;
     }
 
     public void DeleteMovie(Guid id)
@@ -102,6 +94,5 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
         }
         
         _context.Movies.Remove(movie);
-        _context.SaveChanges();
     }
 }

@@ -18,9 +18,6 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     // serialize enums as strings in api responses (e.g. Role)
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
-builder.Services.AddDbContext<Context>
-(options => options.UseSqlServer
-    (builder.Configuration.GetConnectionString("Database")!));
 builder.Services.AddDalServices();
 builder.Services.AddScoped<MovieService>();
 

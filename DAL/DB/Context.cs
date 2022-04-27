@@ -1,25 +1,35 @@
 ﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Models.Enums;
 
 namespace DAL.DB;
 
-public class Context : DbContext
+public sealed class Context : DbContext
 {
-    public Context(DbContextOptions<Context> options)
-        : base(options)
-    {
-    }
-    
     public DbSet<Movie> Movies { get; set;}
     
-    public DbSet<Genre?> Genres { get; set;}
+    public DbSet<Genre> Genres { get; set;}
     
     public DbSet<Director> Directors { get; set;}
     
     public DbSet<MovieGenre> MovieGenres { get; set;}
     
     public DbSet<Comment> Comments { get; set;}
+    
+    public Context()
+    {
+        Database.EnsureCreated();
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        var path = Directory.GetCurrentDirectory().Replace("/DAL", "/WebAPI");
+        path += "/appsettings.json";
+        var configuration = new ConfigurationBuilder().AddJsonFile(path).Build();
+
+        optionsBuilder.UseSqlServer(configuration.GetConnectionString("Database")!);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,4 +58,5 @@ public class Context : DbContext
             );
         
     }
+    
 }
