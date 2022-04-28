@@ -1,5 +1,3 @@
-using DAL.DB;
-
 namespace DAL.Repositories.Abstractions;
 
 public interface IRepository<out T, in TDto>

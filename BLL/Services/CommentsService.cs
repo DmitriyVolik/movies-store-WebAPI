@@ -13,60 +13,46 @@ public class CommentsService
     {
         _unitOfWork = unitOfWork;
     }
-    
-    public void AddComment(CommentRequestDTO commentRequest)
+
+    public Comment AddComment(Comment comment)
     {
-        if (commentRequest.ParentId is not null)
+        if (comment.ParentId is not null)
         {
-            var parentComment = GetCommentById(commentRequest.ParentId);
-        
-            if (parentComment is null)
-            {
-                throw new Exception("Incorrect parentId");
-            }
+            var parentComment = _unitOfWork.Comments.GetById(comment.ParentId);
             
-            commentRequest.Body = commentRequest.Body
+            if (parentComment is null) throw new Exception("Incorrect parentId");
+
+            comment.Body = comment.Body
                 .Insert(0, "[" + parentComment.Username + "]");
         }
 
-        _unitOfWork.Comments.Add(commentRequest);
+        _unitOfWork.Comments.Add(comment);
         _unitOfWork.Save();
+        
+        return comment;
     }
 
-    public IEnumerable<CommentResponseDTO> GetCommentsByMovieId(Guid id)
+    public IEnumerable<CommentTreeDTO> GetCommentsByMovieId(Guid id)
     {
         var comments = _unitOfWork.Comments.GetCommentsByMovieId(id).ToList();
-        
-        ITree<Comment> virtualRootNode = comments.ToTree((parent, child) => child.ParentId == parent.Id);
-        List<ITree<Comment>> flattenedListOfFolderNodes = virtualRootNode.Children.Flatten(node => node.Children).ToList();
-        ITree<Comment> folderNode = flattenedListOfFolderNodes.First();
-        TreeManager.GetParents(folderNode);
 
-        return comments.Select(CommentToResponseDto);
+        var virtualRootNode = comments.ToTree((parent, child) => child.ParentId == parent.Id);
+        var flattenedListOfFolderNodes = virtualRootNode.Children.Flatten(node => node.Children).ToList();
+        var folderNode = flattenedListOfFolderNodes.First();
+        TreeManager.GetParents(folderNode);
+        
+        return comments.Select(CommentToDTO);
     }
 
-    private CommentResponseDTO? GetCommentById(Guid? id)
+    private Comment? GetCommentById(Guid? id)
     {
         var comment = _unitOfWork.Comments.GetById(id);
-        return comment is null ? null : CommentToResponseDto(comment);
+        return comment;
     }
 
-    public static CommentRequestDTO CommentToRequestDto(Comment comment)
+    private CommentTreeDTO CommentToDTO(Comment comment)
     {
-        return new CommentRequestDTO()
-        {
-            Id = comment.Id,
-            ParentId = comment.ParentId,
-            MovieId = comment.Movie.Id,
-            Username = comment.Username,
-            Body = comment.Body
-        };
-    }
-    
-    public static CommentResponseDTO CommentToResponseDto(Comment comment)
-    {
-
-        var commentResponseDto = new CommentResponseDTO
+        var commentResponseDto = new CommentTreeDTO
         {
             Id = comment.Id,
             Username = comment.Username,
@@ -75,15 +61,14 @@ public class CommentsService
 
         if (comment.Parent is not null)
         {
-            commentResponseDto.ParentComment = CommentToResponseDto(comment.Parent);
+            commentResponseDto.ParentCommentTree = CommentToDTO(comment.Parent);
         }
 
         return commentResponseDto;
     }
-    
+
     ~CommentsService()
     {
         _unitOfWork.Dispose();
     }
-    
 }

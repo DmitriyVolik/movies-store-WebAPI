@@ -1,4 +1,5 @@
 using BLL.Services;
+using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
 using WebAPI.ActionFilters;
@@ -18,23 +19,24 @@ public class CommentsController : ControllerBase
     }
     
     [HttpGet("{movieId}")]
-    public IEnumerable<CommentResponseDTO> Get(Guid movieId)
+    public IEnumerable<CommentTreeDTO> Get(Guid movieId)
     {
         return _commentsService.GetCommentsByMovieId(movieId);
     }
 
     [HttpPost]
-    public IActionResult Post(CommentRequestDTO commentRequest)
+    public IActionResult Post(Comment comment)
     {
          try
          {
-             _commentsService.AddComment(commentRequest);
+             var news = _commentsService.AddComment(comment);
+             return Ok(news);
          }
          catch (Exception e)
          {
              return BadRequest(e.Message);
          }
          
-         return Ok(_commentsService);
+         
     }
 }

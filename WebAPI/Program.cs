@@ -20,6 +20,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     x.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy();
 });
+
+
 builder.Services
     .Configure<ApiBehaviorOptions>(x =>
     {

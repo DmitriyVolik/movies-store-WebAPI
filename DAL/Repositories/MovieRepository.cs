@@ -24,10 +24,12 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
         {
             throw new Exception("Incorrect director");
         }
+
+        movie.Id = Guid.NewGuid();
         
         var newMovie = new Movie
         {
-            Id = new Guid(),
+            Id = movie.Id,
             Title = movie.Title,
             Description = movie.Description,
             ReleaseDate = movie.ReleaseDate,
@@ -40,8 +42,6 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
                 Genre = _context.Genres.Find(item)
             }).ToList();
         newMovie.Genres = genres;
-
-        movie.Id = newMovie.Id;
 
         _context.Add(newMovie);
     }

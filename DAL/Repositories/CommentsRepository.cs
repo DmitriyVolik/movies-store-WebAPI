@@ -14,52 +14,37 @@ public class CommentsRepository : ICommentsRepository
     {
         _context = context;
     }
-    public void Add(CommentRequestDTO commentRequest)
+    public void Add(Comment comment)
     {
-        var movie = _context.Movies.FirstOrDefault(x => x.Id == commentRequest.MovieId);
+        var movie = _context.Movies.FirstOrDefault(x => x.Id == comment.MovieId);
         if (movie is null)
         {
             throw new Exception("Incorrect movieId");
         }
-
-        var newComment = new Comment
-        {
-            Id = Guid.NewGuid(),
-            ParentId = commentRequest.ParentId,
-            Username = commentRequest.Username,
-            Body = commentRequest.Body,
-            Movie = movie
-        };
-
-        commentRequest.Id = newComment.Id;
         
-        _context.Comments.Add(newComment);
+        comment.Id = Guid.NewGuid();
+        
+        _context.Comments.Add(comment);
     }
 
     public IEnumerable<Comment> Get()
     {
-        return _context.Comments
-            .Include(x => x.Movie);
+        return _context.Comments;
     }
 
     public Comment? GetById(Guid? id)
     {
         return _context.Comments
-            .Include(x=>x.Movie)
-            .Include(x=>x.Parent)
-            .ThenInclude(x=>x.Parent)
             .FirstOrDefault(x => x.Id == id);
     }
     
     public IEnumerable<Comment> GetCommentsByMovieId(Guid id)
     {
         return _context.Comments
-            .Include(x=>x.Movie)
-            .Include(x=>x.SubComments)
-            .Where(x=>x.Movie.Id == id);
+            .Where(x=>x.MovieId == id);
     }
 
-    public void Update(CommentRequestDTO commentRequestUpdate)
+    public void Update(Comment commentRequestUpdate)
     {
         throw new NotImplementedException();
     }
