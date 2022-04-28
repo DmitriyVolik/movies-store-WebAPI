@@ -21,8 +21,8 @@ public class CommentsService
             var parentComment = _unitOfWork.Comments.GetById(comment.ParentId);
 
             if (parentComment is null) throw new Exception("Incorrect parentId");
-            
-            if(comment.MovieId != parentComment.MovieId) throw new Exception("movie_id is different from parent");
+
+            if (comment.MovieId != parentComment.MovieId) throw new Exception("movie_id is different from parent");
 
             comment.Body = comment.Body.Insert(0, "[" + parentComment.Username + "]");
         }

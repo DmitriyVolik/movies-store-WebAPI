@@ -12,17 +12,13 @@ public class DirectorsRepository : IRepository<Director, Director>
     {
         _context = context;
     }
-    
+
     public void Add(Director director)
     {
-        if (_context.Directors.FirstOrDefault(x=>x.FullName==director.FullName) is null)
-        {
+        if (_context.Directors.FirstOrDefault(x => x.FullName == director.FullName) is null)
             _context.Add(director);
-        }
         else
-        {
             throw new Exception("Director with this name already exists");
-        }
     }
 
     public IEnumerable<Director> Get()
