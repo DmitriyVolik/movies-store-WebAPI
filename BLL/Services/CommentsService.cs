@@ -37,9 +37,9 @@ public class CommentsService
         var comments = _unitOfWork.Comments.GetCommentsByMovieId(id).ToList();
 
         var virtualRootNode = comments.ToTree((parent, child) => child.ParentId == parent.Id);
-        var flattenedListOfFolderNodes = virtualRootNode.Children.Flatten(node => node.Children).ToList();
-        var folderNode = flattenedListOfFolderNodes.First();
-        TreeManager.GetParents(folderNode);
+        var flattenedListOfNodes = virtualRootNode.Children.Flatten(node => node.Children).ToList();
+        var node = flattenedListOfNodes.First();
+        TreeManager.GetParents(node);
         
         return comments.Select(CommentToDTO);
     }

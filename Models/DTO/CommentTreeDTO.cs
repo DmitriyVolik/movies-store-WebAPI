@@ -6,6 +6,7 @@ public class CommentTreeDTO
 {
     public Guid Id { get; set; }
     
+    [JsonPropertyName("parent_comment")]
     public CommentTreeDTO ParentCommentTree { get; set; }
 
     public string Username { get; set; }

@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using BLL.Services;
 using DAL;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
 using WebAPI.Middlewares;
 using WebAPI.Utils.Errors;
 using WebAPI.Utils.Json;
@@ -17,16 +18,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
     // serialize enums as strings in api responses (e.g. Role)
-    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    x.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy();
-});
-
-
-builder.Services
-    .Configure<ApiBehaviorOptions>(x =>
+     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+}).AddNewtonsoftJson(x =>
+{
+    x.SerializerSettings.ContractResolver = new DefaultContractResolver()
     {
-        x.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult();
-    });
+        NamingStrategy = new SnakeCaseNamingStrategy()
+    };
+});
+builder.Services
+     .Configure<ApiBehaviorOptions>(x =>
+     {
+         x.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult();
+     });
 builder.Services.AddDalServices();
 builder.Services.AddScoped<MoviesService>();
 builder.Services.AddScoped<CommentsService>();
