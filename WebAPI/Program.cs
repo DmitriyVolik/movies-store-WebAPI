@@ -34,6 +34,8 @@ builder.Services
 builder.Services.AddDalServices();
 builder.Services.AddScoped<MoviesService>();
 builder.Services.AddScoped<CommentsService>();
+builder.Services.AddScoped<DirectorsService>();
+builder.Services.AddScoped<GenresService>();
 
 var app = builder.Build();
 

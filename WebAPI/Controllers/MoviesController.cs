@@ -1,7 +1,7 @@
+using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
 using WebAPI.ActionFilters;
-using MoviesService = BLL.Services.MoviesService;
 
 namespace WebAPI.Controllers;
 
@@ -27,9 +27,9 @@ public class MoviesController : ControllerBase
     public IActionResult Get(Guid id)
     {
         var movie = _moviesService.GetMovieById(id);
-    
+
         if (movie is null) return NotFound("Incorrect id");
-    
+
         return Ok(movie);
     }
 
@@ -44,7 +44,7 @@ public class MoviesController : ControllerBase
         {
             return BadRequest(e.Message);
         }
-        
+
         return Ok(movie);
     }
 
@@ -56,10 +56,10 @@ public class MoviesController : ControllerBase
             _moviesService.UpdateMovie(id, movie);
         }
         catch (Exception e)
-        { 
+        {
             return NotFound(e.Message);
         }
-        
+
         return Ok(movie);
     }
 
@@ -74,7 +74,7 @@ public class MoviesController : ControllerBase
         {
             return NotFound();
         }
-    
+
         return Ok();
     }
 }

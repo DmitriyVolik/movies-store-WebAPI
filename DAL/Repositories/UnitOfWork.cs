@@ -8,10 +8,14 @@ namespace DAL.Repositories;
 internal class UnitOfWork : IUnitOfWork
 {
     private readonly Context _context = new Context();
-    
+
     private MovieRepository _moviesRepository;
-    
+
     private CommentsRepository _commentsRepository;
+    
+    private DirectorsRepository _directorsRepository;
+    
+    private GenresRepository _genresRepository;
 
     public IRepository<Movie, MovieDTO> Movies
     {
@@ -21,10 +25,11 @@ internal class UnitOfWork : IUnitOfWork
             {
                 _moviesRepository = new MovieRepository(_context);
             }
+
             return _moviesRepository;
         }
     }
-    
+
     public ICommentsRepository Comments
     {
         get
@@ -33,10 +38,36 @@ internal class UnitOfWork : IUnitOfWork
             {
                 _commentsRepository = new CommentsRepository(_context);
             }
+
             return _commentsRepository;
         }
     }
     
+    public IRepository<Director, Director> Directors
+    {
+        get
+        {
+            if (_directorsRepository == null)
+            {
+                _directorsRepository = new DirectorsRepository(_context);
+            }
+
+            return _directorsRepository;
+        }
+    }
+    
+    public IRepository<Genre, Genre> Genres
+    {
+        get
+        {
+            if (_genresRepository == null)
+            {
+                _genresRepository = new GenresRepository(_context);
+            }
+
+            return _genresRepository;
+        }
+    }
 
     public void Save()
     {
@@ -54,6 +85,7 @@ internal class UnitOfWork : IUnitOfWork
                 _context.Dispose();
             }
         }
+
         _disposed = true;
     }
 

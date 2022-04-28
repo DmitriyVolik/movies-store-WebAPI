@@ -7,8 +7,10 @@ public class Movie
     [Key]
     public Guid Id { get; set; }
 
+    [MaxLength(100)]
     public string Title { get; set; }
 
+    [MaxLength(500)]
     public string Description { get; set; }
 
     public List<MovieGenre> Genres { get; set; }

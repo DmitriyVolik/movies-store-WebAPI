@@ -18,7 +18,9 @@ public class Comment
     [JsonIgnore]
     public ICollection<Comment> SubComments { get; } = new List<Comment>();
 
+    [MaxLength(20)]
     public string Username { get; set; }
 
+    [MaxLength(1000)]
     public string Body { get; set; }
 }

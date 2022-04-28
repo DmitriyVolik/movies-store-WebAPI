@@ -47,11 +47,10 @@ public sealed class Context : DbContext
                     .Cast<GenreEnum>()
                     .Select(e => new Genre()
                     {
-                        Id = e,
+                        Id= e,
                         Name = e.ToString()
                     })
             );
-        
     }
     
 }

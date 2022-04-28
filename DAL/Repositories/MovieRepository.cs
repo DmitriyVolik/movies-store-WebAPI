@@ -9,7 +9,7 @@ namespace DAL.Repositories;
 internal class MovieRepository : IRepository<Movie, MovieDTO>
 {
     private readonly Context _context;
-    
+
     public MovieRepository(Context context)
     {
         _context = context;
@@ -17,16 +17,12 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
 
     public void Add(MovieDTO movie)
     {
-        var director = _context.Directors
-            .FirstOrDefault(x => x.FullName == movie.Director);
+        var director = _context.Directors.FirstOrDefault(x => x.FullName == movie.Director);
 
-        if (director is null)
-        {
-            throw new Exception("Incorrect director");
-        }
+        if (director is null) throw new Exception("Incorrect director");
 
         movie.Id = Guid.NewGuid();
-        
+
         var newMovie = new Movie
         {
             Id = movie.Id,
@@ -36,11 +32,7 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
             Director = director
         };
 
-        var genres = movie.Genres
-            .Select(item => new MovieGenre()
-            {
-                Genre = _context.Genres.Find(item)
-            }).ToList();
+        var genres = movie.Genres.Select(item => new MovieGenre {Genre = _context.Genres.Find(item)}).ToList();
         newMovie.Genres = genres;
 
         _context.Add(newMovie);
@@ -48,16 +40,12 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
 
     public IEnumerable<Movie> Get()
     {
-        return _context.Movies
-            .Include(x=>x.Director)
-            .Include(x => x.Genres)
-            .ThenInclude(x => x.Genre);
+        return _context.Movies.Include(x => x.Director).Include(x => x.Genres).ThenInclude(x => x.Genre);
     }
 
     public Movie? GetById(Guid? id)
     {
-        return _context.Movies
-            .Include(x=>x.Director)
+        return _context.Movies.Include(x => x.Director)
             .Include(x => x.Genres)
             .ThenInclude(x => x.Genre)
             .FirstOrDefault(x => x.Id == id);
@@ -65,22 +53,15 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
 
     public void Update(MovieDTO movieUpdate)
     {
-        var movie = GetById(movieUpdate.Id);  
+        var movie = GetById(movieUpdate.Id);
 
-        if (movie is null)
-        {
-            throw new Exception("Incorrect id");
-        }
-        
+        if (movie is null) throw new Exception("Incorrect id");
+
         movie.Title = movieUpdate.Title;
         movie.Description = movieUpdate.Description;
         movie.ReleaseDate = movieUpdate.ReleaseDate;
-    
-        var genres = movieUpdate.Genres
-            .Select(item => new MovieGenre()
-            {
-                Genre = _context.Genres.Find(item)
-            }).ToList();
+
+        var genres = movieUpdate.Genres.Select(item => new MovieGenre {Genre = _context.Genres.Find(item)}).ToList();
         _context.MovieGenres.RemoveRange(movie.Genres);
         movie.Genres = genres;
     }
@@ -89,11 +70,8 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
     {
         var movie = _context.Movies.FirstOrDefault(x => x.Id == id);
 
-        if (movie is null)
-        {
-            throw new Exception("Incorrect id");
-        }
-        
+        if (movie is null) throw new Exception("Incorrect id");
+
         _context.Movies.Remove(movie);
     }
 }

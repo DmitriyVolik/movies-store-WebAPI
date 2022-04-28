@@ -13,7 +13,7 @@ public class MoviesService
     {
         _unitOfWork = unitOfWork;
     }
-    
+
     public void AddMovie(MovieDTO movie)
     {
         _unitOfWork.Movies.Add(movie);
@@ -36,7 +36,7 @@ public class MoviesService
         _unitOfWork.Movies.Delete(id);
         _unitOfWork.Save();
     }
-    
+
     public void UpdateMovie(Guid id, MovieDTO movie)
     {
         movie.Id = id;
@@ -56,14 +56,11 @@ public class MoviesService
             Genres = new List<GenreEnum>()
         };
 
-        foreach (var item in movie.Genres)
-        {
-            movieDto.Genres.Add(item.Genre.Id);
-        }
+        foreach (var item in movie.Genres) movieDto.Genres.Add(item.Genre.Id);
 
         return movieDto;
     }
-    
+
     ~MoviesService()
     {
         _unitOfWork.Dispose();

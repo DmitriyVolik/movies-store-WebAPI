@@ -1,14 +1,14 @@
 namespace DAL.Repositories.Abstractions;
 
-public interface IRepository<out T, in TDto>
+public interface IRepository<out T, in K>
 {
-    public void Add(TDto movie);
+    public void Add(K obj);
     
     public IEnumerable<T> Get();
     
     public T? GetById(Guid? id);
 
-    public void Update(TDto movieUpdate);
+    public void Update(K update);
     
     public void Delete(Guid id);
 }

@@ -17,7 +17,7 @@ public class CommentsController : ControllerBase
     {
         _commentsService = moviesService;
     }
-    
+
     [HttpGet("{movieId}")]
     public IEnumerable<CommentTreeDTO> Get(Guid movieId)
     {
@@ -27,16 +27,15 @@ public class CommentsController : ControllerBase
     [HttpPost]
     public IActionResult Post(Comment comment)
     {
-         try
-         {
-             var news = _commentsService.AddComment(comment);
-             return Ok(news);
-         }
-         catch (Exception e)
-         {
-             return BadRequest(e.Message);
-         }
-         
-         
+        try
+        {
+            _commentsService.AddComment(comment);
+            
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Ok(comment);
     }
 }

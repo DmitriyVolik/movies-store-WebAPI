@@ -14,22 +14,21 @@ public class CommentsService
         _unitOfWork = unitOfWork;
     }
 
-    public Comment AddComment(Comment comment)
+    public void AddComment(Comment comment)
     {
         if (comment.ParentId is not null)
         {
             var parentComment = _unitOfWork.Comments.GetById(comment.ParentId);
-            
-            if (parentComment is null) throw new Exception("Incorrect parentId");
 
-            comment.Body = comment.Body
-                .Insert(0, "[" + parentComment.Username + "]");
+            if (parentComment is null) throw new Exception("Incorrect parentId");
+            
+            if(comment.MovieId != parentComment.MovieId) throw new Exception("movie_id is different from parent");
+
+            comment.Body = comment.Body.Insert(0, "[" + parentComment.Username + "]");
         }
 
         _unitOfWork.Comments.Add(comment);
         _unitOfWork.Save();
-        
-        return comment;
     }
 
     public IEnumerable<CommentTreeDTO> GetCommentsByMovieId(Guid id)
@@ -40,29 +39,15 @@ public class CommentsService
         var flattenedListOfNodes = virtualRootNode.Children.Flatten(node => node.Children).ToList();
         var node = flattenedListOfNodes.First();
         TreeManager.GetParents(node);
-        
-        return comments.Select(CommentToDTO);
-    }
 
-    private Comment? GetCommentById(Guid? id)
-    {
-        var comment = _unitOfWork.Comments.GetById(id);
-        return comment;
+        return comments.Select(CommentToDTO);
     }
 
     private CommentTreeDTO CommentToDTO(Comment comment)
     {
-        var commentResponseDto = new CommentTreeDTO
-        {
-            Id = comment.Id,
-            Username = comment.Username,
-            Body = comment.Body
-        };
+        var commentResponseDto = new CommentTreeDTO {Id = comment.Id, Username = comment.Username, Body = comment.Body};
 
-        if (comment.Parent is not null)
-        {
-            commentResponseDto.ParentCommentTree = CommentToDTO(comment.Parent);
-        }
+        if (comment.Parent is not null) commentResponseDto.ParentComment = CommentToDTO(comment.Parent);
 
         return commentResponseDto;
     }
