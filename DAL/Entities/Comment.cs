@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace DAL.Entities;
@@ -11,12 +12,13 @@ public class Comment
     public Guid MovieId { get; set; }
     
     [JsonIgnore]
+    [ForeignKey("MovieId")]
+    public Movie Movie { get; set; }
+
+    [JsonIgnore]
     public Comment? Parent { get; set; }
     
     public Guid? ParentId { get; set; }
-    
-    [JsonIgnore]
-    public ICollection<Comment> SubComments { get; } = new List<Comment>();
 
     [MaxLength(20)]
     public string Username { get; set; }

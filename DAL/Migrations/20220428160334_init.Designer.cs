@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220428102428_Restrictions")]
-    partial class Restrictions
+    [Migration("20220428160334_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,8 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
 
                     b.HasIndex("ParentId");
 
@@ -169,9 +171,17 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Comment", b =>
                 {
+                    b.HasOne("DAL.Entities.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DAL.Entities.Comment", "Parent")
-                        .WithMany("SubComments")
+                        .WithMany()
                         .HasForeignKey("ParentId");
+
+                    b.Navigation("Movie");
 
                     b.Navigation("Parent");
                 });
@@ -200,11 +210,6 @@ namespace DAL.Migrations
                         .HasForeignKey("MovieId");
 
                     b.Navigation("Genre");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Comment", b =>
-                {
-                    b.Navigation("SubComments");
                 });
 
             modelBuilder.Entity("DAL.Entities.Movie", b =>

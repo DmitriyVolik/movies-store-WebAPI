@@ -46,6 +46,8 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MovieId");
+
                     b.HasIndex("ParentId");
 
                     b.ToTable("Comments");
@@ -166,9 +168,17 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Comment", b =>
                 {
+                    b.HasOne("DAL.Entities.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DAL.Entities.Comment", "Parent")
-                        .WithMany("SubComments")
+                        .WithMany()
                         .HasForeignKey("ParentId");
+
+                    b.Navigation("Movie");
 
                     b.Navigation("Parent");
                 });
@@ -197,11 +207,6 @@ namespace DAL.Migrations
                         .HasForeignKey("MovieId");
 
                     b.Navigation("Genre");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Comment", b =>
-                {
-                    b.Navigation("SubComments");
                 });
 
             modelBuilder.Entity("DAL.Entities.Movie", b =>
