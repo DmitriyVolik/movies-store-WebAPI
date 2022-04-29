@@ -14,6 +14,6 @@ public class GenresService
 
     public void Add(Genre genre)
     {
-        
+        throw new NotImplementedException();
     }
 }

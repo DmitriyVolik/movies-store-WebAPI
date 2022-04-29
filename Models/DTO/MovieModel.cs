@@ -3,7 +3,7 @@ using Models.Enums;
 
 namespace Models.DTO;
 
-public class MovieDTO
+public class MovieModel
 {
     public Guid Id { get; set; }
 

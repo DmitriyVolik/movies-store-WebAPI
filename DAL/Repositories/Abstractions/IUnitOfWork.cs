@@ -3,9 +3,9 @@ using Models.DTO;
 
 namespace DAL.Repositories.Abstractions;
 
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork
 {
-    public IRepository<Movie, MovieDTO> Movies { get; }
+    public IRepository<Movie, MovieModel> Movies { get; }
     
     public IRepository<Director, Director> Directors { get; }
     

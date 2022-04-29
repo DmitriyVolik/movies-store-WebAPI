@@ -18,7 +18,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<MovieDTO> Get()
+    public IEnumerable<MovieModel> Get()
     {
         return _moviesService.GetMovies();
     }
@@ -34,7 +34,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post(MovieDTO movie)
+    public IActionResult Post(MovieModel movie)
     {
         try
         {
@@ -49,7 +49,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    public IActionResult Patch(Guid id, MovieDTO movie)
+    public IActionResult Patch(Guid id, MovieModel movie)
     {
         try
         {

@@ -14,21 +14,21 @@ public class MoviesService
         _unitOfWork = unitOfWork;
     }
 
-    public void AddMovie(MovieDTO movie)
+    public void AddMovie(MovieModel movie)
     {
         _unitOfWork.Movies.Add(movie);
         _unitOfWork.Save();
     }
 
-    public IEnumerable<MovieDTO> GetMovies()
+    public IEnumerable<MovieModel> GetMovies()
     {
-        return _unitOfWork.Movies.Get().Select(MovieToDto);
+        return _unitOfWork.Movies.Get().Select(MovieToModel);
     }
 
-    public MovieDTO? GetMovieById(Guid id)
+    public MovieModel? GetMovieById(Guid id)
     {
         var movie = _unitOfWork.Movies.GetById(id);
-        return movie is null ? null : MovieToDto(movie);
+        return movie is null ? null : MovieToModel(movie);
     }
 
     public void DeleteMovie(Guid id)
@@ -37,16 +37,16 @@ public class MoviesService
         _unitOfWork.Save();
     }
 
-    public void UpdateMovie(Guid id, MovieDTO movie)
+    public void UpdateMovie(Guid id, MovieModel movie)
     {
         movie.Id = id;
         _unitOfWork.Movies.Update(movie);
         _unitOfWork.Save();
     }
 
-    private static MovieDTO MovieToDto(Movie movie)
+    private static MovieModel MovieToModel(Movie movie)
     {
-        var movieDto = new MovieDTO
+        var movieDto = new MovieModel
         {
             Id = movie.Id,
             Title = movie.Title,
@@ -59,10 +59,5 @@ public class MoviesService
         foreach (var item in movie.Genres) movieDto.Genres.Add(item.Genre.Id);
 
         return movieDto;
-    }
-
-    ~MoviesService()
-    {
-        _unitOfWork.Dispose();
     }
 }

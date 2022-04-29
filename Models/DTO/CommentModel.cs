@@ -1,11 +1,11 @@
 
 namespace Models.DTO;
 
-public class CommentTreeDTO
+public class CommentModel
 {
     public Guid Id { get; set; }
     
-    public CommentTreeDTO ParentComment { get; set; }
+    public CommentModel ParentComment { get; set; }
 
     public string Username { get; set; }
 

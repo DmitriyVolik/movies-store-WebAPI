@@ -31,7 +31,7 @@ public class CommentsService
         _unitOfWork.Save();
     }
 
-    public IEnumerable<CommentTreeDTO> GetCommentsByMovieId(Guid id)
+    public IEnumerable<CommentModel> GetCommentsByMovieId(Guid id)
     {
         var comments = _unitOfWork.Comments.GetCommentsByMovieId(id).ToList();
 
@@ -40,20 +40,15 @@ public class CommentsService
         var node = flattenedListOfNodes.First();
         TreeManager.GetParents(node);
 
-        return comments.Select(CommentToDTO);
+        return comments.Select(CommentToModel);
     }
 
-    private CommentTreeDTO CommentToDTO(Comment comment)
+    private CommentModel CommentToModel(Comment comment)
     {
-        var commentResponseDto = new CommentTreeDTO {Id = comment.Id, Username = comment.Username, Body = comment.Body};
+        var commentResponseDto = new CommentModel {Id = comment.Id, Username = comment.Username, Body = comment.Body};
 
-        if (comment.Parent is not null) commentResponseDto.ParentComment = CommentToDTO(comment.Parent);
+        if (comment.Parent is not null) commentResponseDto.ParentComment = CommentToModel(comment.Parent);
 
         return commentResponseDto;
-    }
-
-    ~CommentsService()
-    {
-        _unitOfWork.Dispose();
     }
 }
