@@ -19,7 +19,7 @@ public class CommentsController : ControllerBase
     }
 
     [HttpGet("{movieId}")]
-    public IEnumerable<CommentTreeDTO> Get(Guid movieId)
+    public IEnumerable<CommentModel> Get(Guid movieId)
     {
         return _commentsService.GetCommentsByMovieId(movieId);
     }

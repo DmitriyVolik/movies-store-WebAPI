@@ -7,6 +7,11 @@ namespace DAL.DB;
 
 public sealed class Context : DbContext
 {
+    public Context(DbContextOptions<Context> options)
+        : base(options)
+    {
+    }
+    
     public DbSet<Movie> Movies { get; set;}
     
     public DbSet<Genre> Genres { get; set;}
@@ -16,15 +21,6 @@ public sealed class Context : DbContext
     public DbSet<MovieGenre> MovieGenres { get; set;}
     
     public DbSet<Comment> Comments { get; set;}
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var path = Directory.GetCurrentDirectory().Replace("/DAL", "/WebAPI");
-        path += "/appsettings.json";
-        var configuration = new ConfigurationBuilder().AddJsonFile(path).Build();
-
-        optionsBuilder.UseSqlServer(configuration.GetConnectionString("Database")!);
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,5 +48,4 @@ public sealed class Context : DbContext
                     })
             );
     }
-    
 }

@@ -31,7 +31,7 @@ builder.Services
      {
          x.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult();
      });
-builder.Services.AddDalServices();
+builder.Services.AddDalServices(builder.Configuration);
 builder.Services.AddScoped<MoviesService>();
 builder.Services.AddScoped<CommentsService>();
 builder.Services.AddScoped<DirectorsService>();

@@ -6,7 +6,7 @@ using Models.DTO;
 
 namespace DAL.Repositories;
 
-internal class MovieRepository : IRepository<Movie, MovieDTO>
+internal class MovieRepository : IRepository<Movie, MovieModel>
 {
     private readonly Context _context;
 
@@ -15,7 +15,7 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
         _context = context;
     }
 
-    public void Add(MovieDTO movie)
+    public void Add(MovieModel movie)
     {
         var director = _context.Directors.FirstOrDefault(x => x.FullName == movie.Director);
 
@@ -51,7 +51,7 @@ internal class MovieRepository : IRepository<Movie, MovieDTO>
             .FirstOrDefault(x => x.Id == id);
     }
 
-    public void Update(MovieDTO movieUpdate)
+    public void Update(MovieModel movieUpdate)
     {
         var movie = GetById(movieUpdate.Id);
 
