@@ -46,7 +46,7 @@ public class MoviesService
 
     private static MovieModel MovieToModel(Movie movie)
     {
-        var movieDto = new MovieModel
+        var movieModel = new MovieModel
         {
             Id = movie.Id,
             Title = movie.Title,
@@ -56,8 +56,11 @@ public class MoviesService
             Genres = new List<GenreEnum>()
         };
 
-        foreach (var item in movie.Genres) movieDto.Genres.Add(item.Genre.Id);
-
-        return movieDto;
+        foreach (var item in movie.Genres)
+        {
+            movieModel.Genres.Add(item.Genre.Id);
+        }
+        
+        return movieModel;
     }
 }

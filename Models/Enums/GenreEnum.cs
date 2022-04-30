@@ -1,6 +1,6 @@
 namespace Models.Enums;
 
-public enum GenreEnum : int
+public enum GenreEnum
 {
     Action = 1,
     Comedy = 2,

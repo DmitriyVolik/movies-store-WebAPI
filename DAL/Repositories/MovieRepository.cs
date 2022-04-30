@@ -40,7 +40,9 @@ internal class MovieRepository : IRepository<Movie, MovieModel>
 
     public IEnumerable<Movie> Get()
     {
-        return _context.Movies.Include(x => x.Director).Include(x => x.Genres).ThenInclude(x => x.Genre);
+        return _context.Movies.Include(x => x.Director)
+            .Include(x => x.Genres)
+            .ThenInclude(x => x.Genre);
     }
 
     public Movie? GetById(Guid? id)

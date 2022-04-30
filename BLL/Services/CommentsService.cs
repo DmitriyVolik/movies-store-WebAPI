@@ -1,4 +1,3 @@
-using BLL.Extensions;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Models.DTO;
@@ -34,21 +33,30 @@ public class CommentsService
     public IEnumerable<CommentModel> GetCommentsByMovieId(Guid id)
     {
         var comments = _unitOfWork.Comments.GetCommentsByMovieId(id).ToList();
-
-        var virtualRootNode = comments.ToTree((parent, child) => child.ParentId == parent.Id);
-        var flattenedListOfNodes = virtualRootNode.Children.Flatten(node => node.Children).ToList();
-        var node = flattenedListOfNodes.First();
-        TreeManager.GetParents(node);
-
-        return comments.Select(CommentToModel);
+        
+        return comments.Select(item => GetCommentModelTree(item, comments)!).ToList();
     }
 
-    private CommentModel CommentToModel(Comment comment)
+    private CommentModel? GetCommentModelTree(Comment? comment, List<Comment> comments)
     {
-        var commentResponseDto = new CommentModel {Id = comment.Id, Username = comment.Username, Body = comment.Body};
+        if (comment is null)
+        {
+            return null;
+        }
 
-        if (comment.Parent is not null) commentResponseDto.ParentComment = CommentToModel(comment.Parent);
+        var commentModel = new CommentModel
+        {
+            Id = comment.Id,
+            Username = comment.Username,
+            Body = comment.Body
+        };
 
-        return commentResponseDto;
+        if (comment.ParentId is not null)
+        {
+            commentModel.ParentComment =
+                GetCommentModelTree(comments.FirstOrDefault(x => x.Id == comment.ParentId), comments);
+        }
+
+        return commentModel;
     }
 }
