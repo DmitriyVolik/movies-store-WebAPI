@@ -32,7 +32,11 @@ internal class MovieRepository : IRepository<Movie, MovieModel>
             Director = director
         };
 
-        var genres = movie.Genres.Select(item => new MovieGenre {Genre = _context.Genres.Find(item)}).ToList();
+        var genres = movie.Genres.Select(item => 
+            new MovieGenre
+            {
+                Genre = _context.Genres.FirstOrDefault(x=>x.Name == item.ToString())!
+            }).ToList();
         newMovie.Genres = genres;
 
         _context.Add(newMovie);

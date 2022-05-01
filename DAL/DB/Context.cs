@@ -31,11 +31,6 @@ public sealed class Context : DbContext
         modelBuilder.Entity<Director>()
             .HasIndex(u => u.FullName)
             .IsUnique();
-        
-        modelBuilder
-            .Entity<Genre>()
-            .Property(e => e.Id)
-            .HasConversion<int>();
 
         modelBuilder
             .Entity<Genre>().HasData(
@@ -43,7 +38,7 @@ public sealed class Context : DbContext
                     .Cast<GenreEnum>()
                     .Select(e => new Genre()
                     {
-                        Id= e,
+                        Id = Convert.ToInt32(e),
                         Name = e.ToString()
                     })
             );

@@ -1,3 +1,4 @@
+using System.Data.Entity.Validation;
 using BLL.Services;
 using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ public class DirectorsController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(e.InnerException!.Message);
         }
         
         return Ok(director);

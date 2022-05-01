@@ -5,8 +5,7 @@ namespace DAL.Entities;
 
 public class Genre
 {
-    [Key]
-    public GenreEnum Id { get; set; }
+    public int Id { get; set; }
     
     [MaxLength(20)]
     public string Name { get; set; }

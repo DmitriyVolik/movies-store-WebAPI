@@ -13,9 +13,11 @@ public class Comment
     
     [JsonIgnore]
     [ForeignKey("MovieId")]
+    [Required]
     public Movie? Movie { get; set; }
 
     [JsonIgnore]
+    [ForeignKey("ParentId")]
     public Comment? Parent { get; set; }
     
     public Guid? ParentId { get; set; }

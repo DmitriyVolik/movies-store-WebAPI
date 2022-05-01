@@ -13,9 +13,10 @@ public class Movie
 
     [MaxLength(500)]
     public string Description { get; set; }
-
+    
     public List<MovieGenre> Genres { get; set; }
 
+    [Required]
     public Director Director { get; set; }
 
     public DateTime ReleaseDate { get; set; }

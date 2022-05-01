@@ -15,10 +15,10 @@ public class DirectorsRepository : IRepository<Director, Director>
 
     public void Add(Director director)
     {
-        if (_context.Directors.FirstOrDefault(x => x.FullName == director.FullName) is null)
-            _context.Add(director);
-        else
-            throw new Exception("Director with this name already exists");
+        // if (_context.Directors.FirstOrDefault(x => x.FullName == director.FullName) is null)
+             _context.Add(director);
+        // else
+        //     throw new Exception("Director with this name already exists");
     }
 
     public IEnumerable<Director> Get()

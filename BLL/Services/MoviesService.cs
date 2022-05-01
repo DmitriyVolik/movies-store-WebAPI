@@ -58,7 +58,7 @@ public class MoviesService
 
         foreach (var item in movie.Genres)
         {
-            movieModel.Genres.Add(item.Genre.Id);
+            movieModel.Genres.Add((GenreEnum)Enum.Parse(typeof(GenreEnum), item.Genre.Name));
         }
         
         return movieModel;
