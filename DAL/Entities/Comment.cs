@@ -13,7 +13,6 @@ public class Comment
     
     [JsonIgnore]
     [ForeignKey("MovieId")]
-    [Required]
     public Movie? Movie { get; set; }
 
     [JsonIgnore]
