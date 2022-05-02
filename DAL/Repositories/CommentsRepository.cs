@@ -1,6 +1,7 @@
 using DAL.DB;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
+using Models.Exceptions;
 
 namespace DAL.Repositories;
 
@@ -16,7 +17,7 @@ public class CommentsRepository : ICommentsRepository
     public void Add(Comment comment)
     {
         var movie = _context.Movies.FirstOrDefault(x => x.Id == comment.MovieId);
-        if (movie is null) throw new Exception("Incorrect movie_id");
+        if (movie is null) throw new IncorrectDataException("Incorrect movie_id");
 
         comment.Id = Guid.NewGuid();
 

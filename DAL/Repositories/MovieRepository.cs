@@ -3,6 +3,7 @@ using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Models.DTO;
+using Models.Exceptions;
 
 namespace DAL.Repositories;
 
@@ -19,7 +20,7 @@ internal class MovieRepository : IRepository<Movie, MovieModel>
     {
         var director = _context.Directors.FirstOrDefault(x => x.FullName == movie.Director);
 
-        if (director is null) throw new Exception("Incorrect director");
+        if (director is null) throw new IncorrectDataException("Incorrect director");
 
         movie.Id = Guid.NewGuid();
 
@@ -35,7 +36,7 @@ internal class MovieRepository : IRepository<Movie, MovieModel>
         var genres = movie.Genres.Select(item => 
             new MovieGenre
             {
-                Genre = _context.Genres.FirstOrDefault(x=>x.Name == item.ToString())!
+                Genre = _context.Genres.First(x=>x.Name == item.ToString())!
             }).ToList();
         newMovie.Genres = genres;
 
@@ -61,13 +62,17 @@ internal class MovieRepository : IRepository<Movie, MovieModel>
     {
         var movie = GetById(movieUpdate.Id);
 
-        if (movie is null) throw new Exception("Incorrect id");
+        if (movie is null) throw new NotFoundException("Incorrect id");
 
         movie.Title = movieUpdate.Title;
         movie.Description = movieUpdate.Description;
         movie.ReleaseDate = movieUpdate.ReleaseDate;
 
-        var genres = movieUpdate.Genres.Select(item => new MovieGenre {Genre = _context.Genres.Find(item)}).ToList();
+        var genres = movie.Genres.Select(item => 
+            new MovieGenre
+            {
+                Genre = _context.Genres.First(x=>x.Name == item.ToString())!
+            }).ToList();
         _context.MovieGenres.RemoveRange(movie.Genres);
         movie.Genres = genres;
     }
@@ -76,7 +81,7 @@ internal class MovieRepository : IRepository<Movie, MovieModel>
     {
         var movie = _context.Movies.FirstOrDefault(x => x.Id == id);
 
-        if (movie is null) throw new Exception("Incorrect id");
+        if (movie is null) throw new NotFoundException("Incorrect id");
 
         _context.Movies.Remove(movie);
     }

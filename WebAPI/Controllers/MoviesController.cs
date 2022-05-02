@@ -36,30 +36,14 @@ public class MoviesController : ControllerBase
     [HttpPost]
     public IActionResult Post(MovieModel movie)
     {
-        try
-        {
-            _moviesService.AddMovie(movie);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-
+        _moviesService.AddMovie(movie);
         return Ok(movie);
     }
 
     [HttpPatch("{id}")]
     public IActionResult Patch(Guid id, MovieModel movie)
     {
-        try
-        {
-            _moviesService.UpdateMovie(id, movie);
-        }
-        catch (Exception e)
-        {
-            return NotFound(e.Message);
-        }
-
+        _moviesService.UpdateMovie(id, movie);
         return Ok(movie);
     }
 
@@ -72,7 +56,7 @@ public class MoviesController : ControllerBase
         }
         catch (Exception e)
         {
-            return NotFound();
+            return NotFound(e.Message);
         }
 
         return Ok();

@@ -20,15 +20,7 @@ public class DirectorsController : ControllerBase
     [HttpPost]
     public IActionResult Post(Director director)
     {
-        try
-        {
-            _directorsService.Add(director);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.InnerException!.Message);
-        }
-        
+        _directorsService.Add(director);
         return Ok(director);
     }
 

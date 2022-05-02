@@ -44,6 +44,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<ExceptionsMiddleware>();
+
 app.UseMiddleware<ApiKeyMiddleware>(builder.Configuration["api_key"]);
 
 app.UseAuthorization();

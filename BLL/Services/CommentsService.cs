@@ -1,6 +1,7 @@
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Models.DTO;
+using Models.Exceptions;
 
 namespace BLL.Services;
 
@@ -19,9 +20,9 @@ public class CommentsService
         {
             var parentComment = _unitOfWork.Comments.GetById(comment.ParentId);
 
-            if (parentComment is null) throw new Exception("Incorrect parentId");
+            if (parentComment is null) throw new IncorrectDataException("Incorrect parentId");
 
-            if (comment.MovieId != parentComment.MovieId) throw new Exception("movie_id is different from parent");
+            if (comment.MovieId != parentComment.MovieId) throw new IncorrectDataException("movie_id is different from parent");
 
             comment.Body = comment.Body.Insert(0, "[" + parentComment.Username + "]");
         }
