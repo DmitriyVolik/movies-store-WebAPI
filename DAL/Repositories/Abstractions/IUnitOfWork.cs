@@ -8,9 +8,7 @@ public interface IUnitOfWork
     public IRepository<Movie, MovieModel> Movies { get; }
     
     public IRepository<Director, Director> Directors { get; }
-    
-    public IRepository<Genre, Genre> Genres { get; }
-    
+
     public ICommentsRepository Comments { get; }
 
     public void Save();

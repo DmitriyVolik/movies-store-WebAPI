@@ -15,8 +15,6 @@ internal class UnitOfWork : IUnitOfWork
 
     private DirectorsRepository _directorsRepository;
 
-    private GenresRepository _genresRepository;
-
     public UnitOfWork(Context context)
     {
         _context = context;
@@ -49,16 +47,6 @@ internal class UnitOfWork : IUnitOfWork
             if (_directorsRepository == null) _directorsRepository = new DirectorsRepository(_context);
 
             return _directorsRepository;
-        }
-    }
-
-    public IRepository<Genre, Genre> Genres
-    {
-        get
-        {
-            if (_genresRepository == null) _genresRepository = new GenresRepository(_context);
-
-            return _genresRepository;
         }
     }
 
