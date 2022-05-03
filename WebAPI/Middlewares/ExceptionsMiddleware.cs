@@ -19,31 +19,25 @@ public class ExceptionsMiddleware
         {
             await _next(context);
         }
+        catch (NotFoundException e)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            await context.Response.WriteAsync(e.Message);
+        }
+        catch (IncorrectDataException e)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            await context.Response.WriteAsync(e.Message);
+        }
+        catch (DbUpdateException e)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            await context.Response.WriteAsync(e.InnerException!.Message);
+        }
         catch (Exception e)
         {
-            string message;
-            
-            switch (e)
-            {
-                case NotFoundException:
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    message = e.Message;
-                    break;
-                case IncorrectDataException:
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    message = e.Message;
-                    break;
-                case DbUpdateException:
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    message = e.InnerException!.Message;
-                    break;
-                default:
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    message = e.Message;
-                    break;
-            }
-            
-            await context.Response.WriteAsync(message);
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            await context.Response.WriteAsync(e.Message);
         }
     }
 }

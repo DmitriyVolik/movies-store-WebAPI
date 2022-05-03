@@ -8,4 +8,6 @@ public class MovieGenre
     
     [Required]
     public Genre Genre { get; set; }
+
+    public Movie Movie { get; set; }
 }

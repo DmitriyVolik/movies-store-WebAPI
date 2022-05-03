@@ -79,7 +79,9 @@ internal class MovieRepository : IRepository<Movie, MovieModel>
 
     public void Delete(Guid id)
     {
-        var movie = _context.Movies.FirstOrDefault(x => x.Id == id);
+        var movie = _context.Movies
+            .Include(x=>x.Genres)
+            .FirstOrDefault(x => x.Id == id);
 
         if (movie is null) throw new NotFoundException("Incorrect id");
 

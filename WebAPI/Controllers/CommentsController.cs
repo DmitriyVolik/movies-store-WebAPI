@@ -27,15 +27,7 @@ public class CommentsController : ControllerBase
     [HttpPost]
     public IActionResult Post(Comment comment)
     {
-        try
-        {
-            _commentsService.AddComment(comment);
-            
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        _commentsService.AddComment(comment);
         return Ok(comment);
     }
 }

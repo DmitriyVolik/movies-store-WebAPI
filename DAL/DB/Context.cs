@@ -25,12 +25,18 @@ public sealed class Context : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Genre>()
-            .HasIndex(u => u.Name)
+            .HasIndex(g => g.Name)
             .IsUnique();
         
         modelBuilder.Entity<Director>()
-            .HasIndex(u => u.FullName)
+            .HasIndex(d => d.FullName)
             .IsUnique();
+
+        modelBuilder.Entity<MovieGenre>()
+            .HasOne(mg => mg.Movie)
+            .WithMany(x => x.Genres)
+            .OnDelete(DeleteBehavior.Cascade);
+            
 
         modelBuilder
             .Entity<Genre>().HasData(

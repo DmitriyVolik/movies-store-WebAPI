@@ -48,17 +48,8 @@ public class MoviesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(Guid id)
+    public void Delete(Guid id)
     {
-        try
-        {
-            _moviesService.DeleteMovie(id);
-        }
-        catch (Exception e)
-        {
-            return NotFound(e.Message);
-        }
-
-        return Ok();
+        _moviesService.DeleteMovie(id);
     }
 }
