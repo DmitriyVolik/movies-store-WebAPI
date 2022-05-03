@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace WebApiTasks.ActionFilters;
+namespace WebAPI.ActionFilters;
 
 public class PerformanceActionFilter : ActionFilterAttribute
 {

@@ -1,9 +1,9 @@
+using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
-using WebApiTasks.ActionFilters;
-using WebApiTasks.Models;
-using WebApiTasks.Services;
+using Models.DTO;
+using WebAPI.ActionFilters;
 
-namespace WebApiTasks.Controllers;
+namespace WebAPI.Controllers;
 
 [ApiController]
 [PerformanceActionFilter]
@@ -18,9 +18,9 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public IEnumerable<MovieModel> Get()
     {
-        return Ok(_moviesService.GetAllMovies());
+        return _moviesService.GetMovies();
     }
 
     [HttpGet("{id}")]
@@ -34,40 +34,22 @@ public class MoviesController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post(Movie movie)
+    public IActionResult Post(MovieModel movie)
     {
         _moviesService.AddMovie(movie);
         return Ok(movie);
     }
 
     [HttpPatch("{id}")]
-    public IActionResult Patch(Guid id, Movie movie)
+    public IActionResult Patch(Guid id, MovieModel movie)
     {
-        try
-        {
-            _moviesService.UpdateMovie(id, movie);
-        }
-        catch (Exception e)
-        {
-            return NotFound();
-        }
-
-        movie.Id = id;
+        _moviesService.UpdateMovie(id, movie);
         return Ok(movie);
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(Guid id)
+    public void Delete(Guid id)
     {
-        try
-        {
-            _moviesService.DeleteMovie(id);
-        }
-        catch (Exception e)
-        {
-            return NotFound();
-        }
-
-        return Ok();
+        _moviesService.DeleteMovie(id);
     }
 }

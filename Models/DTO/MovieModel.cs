@@ -1,16 +1,19 @@
-using WebApiTasks.Enums;
+using Models.Enums;
 
-namespace WebApiTasks.Models;
+namespace Models.DTO;
 
-public class Movie
+public class MovieModel
 {
     public Guid Id { get; set; }
 
     public string Title { get; set; }
-
+    
     public string Description { get; set; }
 
-    public List<Genre> Genres { get; set; }
+    public List<GenreEnum> Genres { get; set; }
 
+    public string Director { get; set; }
+    
     public DateTime ReleaseDate { get; set; }
 }
+
