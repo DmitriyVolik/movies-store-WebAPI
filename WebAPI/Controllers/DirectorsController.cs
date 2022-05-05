@@ -20,7 +20,7 @@ public class DirectorsController : ControllerBase
     [HttpPost]
     public IActionResult Post(Director director)
     {
-        _directorsService.Add(director);
+        _directorsService.AddUser(director);
         return Ok(director);
     }
 

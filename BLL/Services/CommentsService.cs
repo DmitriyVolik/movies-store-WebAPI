@@ -1,7 +1,7 @@
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
-using Models.DTO;
 using Models.Exceptions;
+using Models.Models;
 
 namespace BLL.Services;
 

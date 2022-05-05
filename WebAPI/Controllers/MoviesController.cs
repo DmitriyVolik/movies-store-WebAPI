@@ -1,6 +1,7 @@
 using BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.DTO;
+using Models.Models;
 using WebAPI.ActionFilters;
 
 namespace WebAPI.Controllers;
@@ -16,8 +17,9 @@ public class MoviesController : ControllerBase
     {
         _moviesService = moviesService;
     }
-
+    
     [HttpGet]
+    [Authorize("user:read")]
     public IEnumerable<MovieModel> Get()
     {
         return _moviesService.GetMovies();

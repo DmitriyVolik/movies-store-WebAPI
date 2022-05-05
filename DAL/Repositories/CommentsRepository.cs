@@ -5,7 +5,7 @@ using Models.Exceptions;
 
 namespace DAL.Repositories;
 
-public class CommentsRepository : ICommentsRepository
+internal class CommentsRepository : ICommentsRepository
 {
     private readonly Context _context;
 
@@ -46,6 +46,15 @@ public class CommentsRepository : ICommentsRepository
 
     public void Delete(Guid id)
     {
-        throw new NotImplementedException();
+        var comment = GetById(id);
+        
+        if (comment is null) throw new NotFoundException("Id is incorrect");
+
+        foreach (var item in _context.Comments.Where(x => x.ParentId == comment.Id))
+        {
+            item.ParentId = null;
+        }
+
+        _context.Comments.Remove(comment);
     }
 }

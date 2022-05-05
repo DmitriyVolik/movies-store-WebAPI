@@ -1,5 +1,5 @@
 using DAL.Entities;
-using Models.DTO;
+using Models.Models;
 
 namespace DAL.Repositories.Abstractions;
 
@@ -10,6 +10,8 @@ public interface IUnitOfWork
     public IRepository<Director, Director> Directors { get; }
 
     public ICommentsRepository Comments { get; }
+
+    public IUsersRepository Users { get; }
 
     public void Save();
 }

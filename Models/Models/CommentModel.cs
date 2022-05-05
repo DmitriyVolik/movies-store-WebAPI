@@ -1,5 +1,5 @@
 
-namespace Models.DTO;
+namespace Models.Models;
 
 public class CommentModel
 {

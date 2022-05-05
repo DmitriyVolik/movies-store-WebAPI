@@ -1,7 +1,8 @@
 using BLL.Services;
 using DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.DTO;
+using Models.Models;
 using WebAPI.ActionFilters;
 
 namespace WebAPI.Controllers;
@@ -17,7 +18,7 @@ public class CommentsController : ControllerBase
     {
         _commentsService = moviesService;
     }
-
+    
     [HttpGet("{movieId}")]
     public IEnumerable<CommentModel> Get(Guid movieId)
     {

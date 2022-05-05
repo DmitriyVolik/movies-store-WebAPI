@@ -1,5 +1,4 @@
 using DAL.Entities;
-using Models.DTO;
 
 namespace DAL.Repositories.Abstractions;
 
