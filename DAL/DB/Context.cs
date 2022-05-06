@@ -62,5 +62,36 @@ public sealed class Context : DbContext
                         Name = e.ToString()
                     })
             );
+
+        var seedUsers = new List<User>()
+        {
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "useremail@gmail.com",
+                Name = "User",
+                Password = BCrypt.Net.BCrypt.HashPassword("Passw0rd%"),
+                Role = "User"
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "manageremail@gmail.com",
+                Name = "Manager",
+                Password = BCrypt.Net.BCrypt.HashPassword("Passw0rd%"),
+                Role = "Manager"
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "adminemail@gmail.com",
+                Name = "Admin",
+                Password = BCrypt.Net.BCrypt.HashPassword("Passw0rd%"),
+                Role = "Admin"
+            },
+        };
+
+        modelBuilder
+            .Entity<User>().HasData(seedUsers);
     }
 }

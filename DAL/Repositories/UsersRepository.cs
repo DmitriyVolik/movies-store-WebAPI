@@ -1,7 +1,6 @@
 using DAL.DB;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
-using Models.Models;
 
 namespace DAL.Repositories;
 
@@ -13,13 +12,13 @@ internal class UsersRepository : IUsersRepository
     {
         _context = context;
     }
-    
+
     public void Add(User user)
     {
         user.Id = new Guid();
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         user.Role = "User";
-        
+
         _context.Users.Add(user);
     }
 
@@ -32,7 +31,7 @@ internal class UsersRepository : IUsersRepository
     {
         throw new NotImplementedException();
     }
-    
+
     public User? GetByEmail(string email)
     {
         return _context.Users.FirstOrDefault(x => x.Email == email);

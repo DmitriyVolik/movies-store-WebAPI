@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI.Options;
 
-public class AuthConfig
+public class AuthOptions
 {
     public string Issuer { get; set; }
 

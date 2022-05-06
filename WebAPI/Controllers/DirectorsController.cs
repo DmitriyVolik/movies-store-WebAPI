@@ -1,5 +1,6 @@
 using BLL.Services;
 using DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.ActionFilters;
 
@@ -18,9 +19,10 @@ public class DirectorsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize("director:write")]
     public IActionResult Post(Director director)
     {
-        _directorsService.AddUser(director);
+        _directorsService.AddDirector(director);
         return Ok(director);
     }
 

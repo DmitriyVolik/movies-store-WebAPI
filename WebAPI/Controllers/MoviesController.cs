@@ -19,13 +19,14 @@ public class MoviesController : ControllerBase
     }
     
     [HttpGet]
-    [Authorize("user:read")]
+    [Authorize("movie:read")]
     public IEnumerable<MovieModel> Get()
     {
         return _moviesService.GetMovies();
     }
 
     [HttpGet("{id}")]
+    [Authorize("movie:read")]
     public IActionResult Get(Guid id)
     {
         var movie = _moviesService.GetMovieById(id);
@@ -36,6 +37,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize("movie:write")]
     public IActionResult Post(MovieModel movie)
     {
         _moviesService.AddMovie(movie);
@@ -43,6 +45,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize("movie:write")]
     public IActionResult Patch(Guid id, MovieModel movie)
     {
         _moviesService.UpdateMovie(id, movie);
@@ -50,6 +53,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize("movie:delete")]
     public void Delete(Guid id)
     {
         _moviesService.DeleteMovie(id);

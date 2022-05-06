@@ -12,7 +12,7 @@ public class DirectorsService
         _unitOfWork = unitOfWork;
     }
 
-    public void AddUser(Director director)
+    public void AddDirector(Director director)
     {
         _unitOfWork.Directors.Add(director);
         _unitOfWork.Save();

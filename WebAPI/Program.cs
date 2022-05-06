@@ -11,7 +11,6 @@ using WebAPI.Authorization.Handlers;
 using WebAPI.Authorization.Requirements;
 using WebAPI.Extensions;
 using WebAPI.Middlewares;
-using WebAPI.Options;
 using WebAPI.Utils.Errors;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -82,7 +81,7 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionsMiddleware>();
 
-//app.UseMiddleware<ApiKeyMiddleware>(builder.Configuration["api_key"]);
+app.UseMiddleware<ApiKeyMiddleware>(builder.Configuration["api_key"]);
 
 app.UseAuthentication();
 

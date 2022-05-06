@@ -38,6 +38,12 @@ public class CommentsService
         return comments.Select(item => GetCommentModelTree(item, comments)!).ToList();
     }
 
+    public void DeleteComment(Guid id)
+    {
+        _unitOfWork.Comments.Delete(id);
+        _unitOfWork.Save();
+    }
+
     private CommentModel? GetCommentModelTree(Comment? comment, List<Comment> comments)
     {
         if (comment is null)

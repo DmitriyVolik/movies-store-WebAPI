@@ -1,10 +1,11 @@
 using BLL.Services;
 using DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
 using WebAPI.ActionFilters;
+using WebAPI.Authorization.Services;
 using WebAPI.Extensions;
-using WebAPI.Services;
 
 namespace WebAPI.Controllers;
 
@@ -24,6 +25,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize("user:read")]
     public IEnumerable<UserModel> Get()
     {
         return _usersService.GetUsers();
@@ -33,16 +35,17 @@ public class UsersController : ControllerBase
     public IActionResult Post(User user)
     {
         var userModel = _usersService.AddUser(user);
-        
+
         return Ok(JwtService.GetJwtResponse(userModel, _configuration.GetAuthConfiguration()));
     }
-    
+
     [HttpPost("Actions/Login")]
     public IActionResult Login(LoginModel data)
     {
-        var user = _usersService.GetByEmail(data.Email);
+        var user = _usersService.GetUserByEmail(data.Email);
 
-        if (user is null || !BCrypt.Net.BCrypt.Verify(data.Password, user.Password)) return Unauthorized("Incorrect login or password");
+        if (user is null || !BCrypt.Net.BCrypt.Verify(data.Password, user.Password))
+            return Unauthorized("Incorrect login or password");
 
         return Ok(JwtService.GetJwtResponse(_usersService.UserToModel(user), _configuration.GetAuthConfiguration()));
     }

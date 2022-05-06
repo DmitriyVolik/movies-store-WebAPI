@@ -5,11 +5,11 @@ using Microsoft.IdentityModel.Tokens;
 using Models.Models;
 using WebAPI.Options;
 
-namespace WebAPI.Services;
+namespace WebAPI.Authorization.Services;
 
 public static class JwtService
 {
-    public static object GetJwtResponse(UserModel user, AuthConfig config)
+    public static object GetJwtResponse(UserModel user, AuthOptions options)
     {
         var claims = new List<Claim>
         {
@@ -19,11 +19,11 @@ public static class JwtService
         };
 
         var jwt = new JwtSecurityToken(
-            issuer: config.Issuer,
-            audience: config.Audience,
+            issuer: options.Issuer,
+            audience: options.Audience,
             claims: claims,
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(5)),
-            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Key)), SecurityAlgorithms.HmacSha256));
+            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Key)), SecurityAlgorithms.HmacSha256));
 
         var response = new
         {

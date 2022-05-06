@@ -20,15 +20,24 @@ public class CommentsController : ControllerBase
     }
     
     [HttpGet("{movieId}")]
+    [Authorize("comment:read")]
     public IEnumerable<CommentModel> Get(Guid movieId)
     {
         return _commentsService.GetCommentsByMovieId(movieId);
     }
 
     [HttpPost]
+    [Authorize("comment:write")]
     public IActionResult Post(Comment comment)
     {
         _commentsService.AddComment(comment);
         return Ok(comment);
+    }
+
+    [HttpDelete("{commentId}")]
+    [Authorize("comment:delete")]
+    public void Delete(Guid commentId)
+    {
+        _commentsService.DeleteComment(commentId);
     }
 }

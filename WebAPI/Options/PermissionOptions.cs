@@ -1,6 +1,6 @@
 namespace WebAPI.Options;
 
-public class PermissionConfig
+public class PermissionOptions
 {
     public string Role { get; set; }
 
