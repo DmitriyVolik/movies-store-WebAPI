@@ -7,9 +7,9 @@ using WebAPI.Options;
 
 namespace WebAPI.Authorization.Services;
 
-public static class JwtService
+public class JwtService
 {
-    public static object GetJwtResponse(UserModel user, AuthOptions options)
+    public object GetJwtResponse(UserModel user, AuthOptions options)
     {
         var claims = new List<Claim>
         {

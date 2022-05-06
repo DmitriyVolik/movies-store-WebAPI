@@ -9,6 +9,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using WebAPI.Authorization.Handlers;
 using WebAPI.Authorization.Requirements;
+using WebAPI.Authorization.Services;
 using WebAPI.Extensions;
 using WebAPI.Middlewares;
 using WebAPI.Utils.Errors;
@@ -67,6 +68,7 @@ builder.Services.AddScoped<MoviesService>();
 builder.Services.AddScoped<CommentsService>();
 builder.Services.AddScoped<DirectorsService>();
 builder.Services.AddScoped<UsersService>();
+builder.Services.AddScoped<JwtService>();
 
 var app = builder.Build();
 

@@ -17,10 +17,13 @@ public class UsersController : ControllerBase
     private readonly UsersService _usersService;
 
     private readonly IConfiguration _configuration;
+    
+    private readonly JwtService _jwtService;
 
-    public UsersController(UsersService usersService, IConfiguration configuration)
+    public UsersController(UsersService usersService, JwtService jwtService, IConfiguration configuration)
     {
         _usersService = usersService;
+        _jwtService = jwtService;
         _configuration = configuration;
     }
 
@@ -36,7 +39,7 @@ public class UsersController : ControllerBase
     {
         var userModel = _usersService.AddUser(user);
 
-        return Ok(JwtService.GetJwtResponse(userModel, _configuration.GetAuthConfiguration()));
+        return Ok(_jwtService.GetJwtResponse(userModel, _configuration.GetAuthConfiguration()));
     }
 
     [HttpPost("Actions/Login")]
@@ -47,6 +50,6 @@ public class UsersController : ControllerBase
         if (user is null || !BCrypt.Net.BCrypt.Verify(data.Password, user.Password))
             return Unauthorized("Incorrect login or password");
 
-        return Ok(JwtService.GetJwtResponse(_usersService.UserToModel(user), _configuration.GetAuthConfiguration()));
+        return Ok(_jwtService.GetJwtResponse(_usersService.UserToModel(user), _configuration.GetAuthConfiguration()));
     }
 }
