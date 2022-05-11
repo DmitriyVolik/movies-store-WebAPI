@@ -1,4 +1,4 @@
-using BLL.Services;
+using BLL.Services.Abstractions;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +11,9 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class DirectorsController : ControllerBase
 {
-    private readonly DirectorsService _directorsService;
+    private readonly IDirectorsService _directorsService;
 
-    public DirectorsController(DirectorsService directorsService)
+    public DirectorsController(IDirectorsService directorsService)
     {
         _directorsService = directorsService;
     }

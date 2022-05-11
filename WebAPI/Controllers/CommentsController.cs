@@ -1,9 +1,11 @@
-using BLL.Services;
+using AutoMapper;
+using BLL.Services.Abstractions;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
 using WebAPI.ActionFilters;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers;
 
@@ -12,11 +14,14 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class CommentsController : ControllerBase
 {
-    private readonly CommentsService _commentsService;
+    private readonly ICommentsService _commentsService;
+    
+    private readonly IMapper _mapper;
 
-    public CommentsController(CommentsService moviesService)
+    public CommentsController(ICommentsService moviesService, IMapper mapper)
     {
         _commentsService = moviesService;
+        _mapper = mapper;
     }
     
     [HttpGet("{movieId}")]
@@ -28,10 +33,10 @@ public class CommentsController : ControllerBase
 
     [HttpPost]
     [Authorize("comment:write")]
-    public IActionResult Post(Comment comment)
+    public IActionResult Post(CommentRequestViewModel commentRequest)
     {
-        _commentsService.AddComment(comment);
-        return Ok(comment);
+        _commentsService.AddComment(_mapper.Map<Comment>(commentRequest));
+        return Ok(commentRequest);
     }
 
     [HttpDelete("{commentId}")]

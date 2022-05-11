@@ -1,3 +1,4 @@
+using BLL.Services.Abstractions;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Models.Exceptions;
@@ -5,7 +6,7 @@ using Models.Models;
 
 namespace BLL.Services;
 
-public class CommentsService
+internal class CommentsService : ICommentsService
 {
     private readonly IUnitOfWork _unitOfWork;
 

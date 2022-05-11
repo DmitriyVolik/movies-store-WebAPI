@@ -1,4 +1,5 @@
-using BLL.Services;
+using AutoMapper;
+using BLL.Services.Abstractions;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Models.Models;
 using WebAPI.ActionFilters;
 using WebAPI.Authorization.Services;
 using WebAPI.Extensions;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers;
 
@@ -14,14 +16,17 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly UsersService _usersService;
+    private readonly IUsersService _usersService;
 
     private readonly IConfiguration _configuration;
     
+    private readonly IMapper _mapper;  
+    
     private readonly JwtService _jwtService;
 
-    public UsersController(UsersService usersService, JwtService jwtService, IConfiguration configuration)
+    public UsersController(IUsersService usersService, JwtService jwtService, IConfiguration configuration, IMapper mapper)
     {
+        _mapper = mapper;
         _usersService = usersService;
         _jwtService = jwtService;
         _configuration = configuration;
@@ -35,9 +40,9 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post(User user)
+    public IActionResult Post(UserRequestViewModel userRequest)
     {
-        var userModel = _usersService.AddUser(user);
+        var userModel = _usersService.AddUser(_mapper.Map<User>(userRequest));
 
         return Ok(_jwtService.GetJwtResponse(userModel, _configuration.GetAuthConfiguration()));
     }

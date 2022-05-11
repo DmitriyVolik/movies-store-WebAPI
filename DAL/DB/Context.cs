@@ -37,10 +37,6 @@ public sealed class Context : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique();
-        
-        modelBuilder.Entity<User>()
-            .Property(u => u.Role)
-            .IsRequired();
 
         modelBuilder.Entity<MovieGenre>()
             .HasOne(mg => mg.Movie)

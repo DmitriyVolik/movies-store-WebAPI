@@ -1,4 +1,4 @@
-using BLL.Services;
+using BLL.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
@@ -11,9 +11,9 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class MoviesController : ControllerBase
 {
-    private readonly MoviesService _moviesService;
+    private readonly IMoviesService _moviesService;
 
-    public MoviesController(MoviesService moviesService)
+    public MoviesController(IMoviesService moviesService)
     {
         _moviesService = moviesService;
     }

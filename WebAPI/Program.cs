@@ -1,5 +1,5 @@
 using System.Text;
-using BLL.Services;
+using BLL;
 using DAL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -64,11 +64,9 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddSingleton<IAuthorizationHandler, ClaimAuthorizationHandler>();
 builder.Services.AddDalServices(builder.Configuration);
-builder.Services.AddScoped<MoviesService>();
-builder.Services.AddScoped<CommentsService>();
-builder.Services.AddScoped<DirectorsService>();
-builder.Services.AddScoped<UsersService>();
+builder.Services.AddBllServices();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

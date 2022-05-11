@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using BLL.Services.Abstractions;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Models.Exceptions;
@@ -6,7 +7,7 @@ using Models.Models;
 
 namespace BLL.Services;
 
-public class UsersService
+internal class UsersService : IUsersService
 {
     private readonly IUnitOfWork _unitOfWork;
 
