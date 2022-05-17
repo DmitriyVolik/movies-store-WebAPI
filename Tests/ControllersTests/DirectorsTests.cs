@@ -4,28 +4,21 @@ using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Controllers;
 using Xunit;
+using FluentAssertions;
 
 namespace Tests.ControllersTests;
 
 public class DirectorsTests
 {
     [Fact]
-    public void Add()
+    public void Add_Given_Director_Return_Status200()
     {
         var service = A.Fake<IDirectorsService>();
+        var director = A.Dummy<Director>();
         var controller = new DirectorsController(service);
         
-        var result = controller.Post(_testDirector);
-        var okResult = result as OkObjectResult;
-        
-        Assert.Equal(200, okResult!.StatusCode);
-    }
-    
-    
+        var result = controller.Post(director) as ObjectResult;
 
-    private readonly Director _testDirector = new Director
-    {
-        Id = 1,
-        FullName = "Test Director"
-    };
+        result!.StatusCode.Should().Be(200);
+    }
 }
