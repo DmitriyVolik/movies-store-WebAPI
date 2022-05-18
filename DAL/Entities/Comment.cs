@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
 
 namespace DAL.Entities;
 
@@ -11,11 +10,9 @@ public class Comment
     
     public Guid MovieId { get; set; }
     
-    [JsonIgnore]
     [ForeignKey("MovieId")]
-    public Movie? Movie { get; set; }
-
-    [JsonIgnore]
+    public Movie Movie { get; set; }
+    
     [ForeignKey("ParentId")]
     public Comment? Parent { get; set; }
     

@@ -4,7 +4,7 @@ using DAL.Repositories.Abstractions;
 
 namespace DAL.Repositories;
 
-public class DirectorsRepository : IRepository<Director, Director>
+internal class DirectorsRepository : IRepository<Director, Director>
 {
     private readonly Context _context;
 

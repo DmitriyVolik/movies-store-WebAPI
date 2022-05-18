@@ -2,8 +2,8 @@ using DAL.DB;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
-using Models.DTO;
 using Models.Exceptions;
+using Models.Models;
 
 namespace DAL.Repositories;
 

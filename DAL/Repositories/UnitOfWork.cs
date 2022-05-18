@@ -1,7 +1,7 @@
 using DAL.DB;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
-using Models.DTO;
+using Models.Models;
 
 namespace DAL.Repositories;
 
@@ -14,6 +14,8 @@ internal class UnitOfWork : IUnitOfWork
     private CommentsRepository _commentsRepository;
 
     private DirectorsRepository _directorsRepository;
+    
+    private UsersRepository _usersRepository;
 
     public UnitOfWork(Context context)
     {
@@ -47,6 +49,16 @@ internal class UnitOfWork : IUnitOfWork
             if (_directorsRepository == null) _directorsRepository = new DirectorsRepository(_context);
 
             return _directorsRepository;
+        }
+    }
+    
+    public IUsersRepository Users
+    {
+        get
+        {
+            if (_usersRepository == null) _usersRepository = new UsersRepository(_context);
+
+            return _usersRepository;
         }
     }
 

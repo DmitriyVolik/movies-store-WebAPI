@@ -1,9 +1,10 @@
+using BLL.Services.Abstractions;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
 
 namespace BLL.Services;
 
-public class DirectorsService
+internal class DirectorsService : IDirectorsService
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -12,7 +13,7 @@ public class DirectorsService
         _unitOfWork = unitOfWork;
     }
 
-    public void Add(Director director)
+    public void AddDirector(Director director)
     {
         _unitOfWork.Directors.Add(director);
         _unitOfWork.Save();

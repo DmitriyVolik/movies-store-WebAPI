@@ -4,6 +4,7 @@ using DAL.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220505170945_FixUserPswd")]
+    partial class FixUserPswd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,32 +201,6 @@ namespace DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8222c3fb-be78-4e59-b9c2-296aec2591ca"),
-                            Email = "useremail@gmail.com",
-                            Name = "User",
-                            Password = "$2a$11$FF1ZvmaC6EBc0Pxo0gKXF.loFUbPcAQtwpPmkV9bIV3rlu.vO0QHO",
-                            Role = "User"
-                        },
-                        new
-                        {
-                            Id = new Guid("2ba1d6d4-b595-4455-8c71-96b2fd6aa24d"),
-                            Email = "manageremail@gmail.com",
-                            Name = "Manager",
-                            Password = "$2a$11$Hx8SlauJqRzLLaMVoYwOoeCXNFpcko5gcKdpFBEek.qBJVwOprXVq",
-                            Role = "Manager"
-                        },
-                        new
-                        {
-                            Id = new Guid("16ec2435-9f86-4b6b-a34c-afec6d55116f"),
-                            Email = "adminemail@gmail.com",
-                            Name = "Admin",
-                            Password = "$2a$11$3pcU0/38tt2LLKbj/FtxDOLyg6UMPodRuiYGZu8zbPeqcZ0f670Tq",
-                            Role = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Comment", b =>

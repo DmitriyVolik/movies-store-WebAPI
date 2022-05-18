@@ -21,6 +21,8 @@ public sealed class Context : DbContext
     public DbSet<MovieGenre> MovieGenres { get; set;}
     
     public DbSet<Comment> Comments { get; set;}
+    
+    public DbSet<User> Users { get; set;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,12 +33,20 @@ public sealed class Context : DbContext
         modelBuilder.Entity<Director>()
             .HasIndex(d => d.FullName)
             .IsUnique();
+        
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
 
         modelBuilder.Entity<MovieGenre>()
             .HasOne(mg => mg.Movie)
             .WithMany(x => x.Genres)
             .OnDelete(DeleteBehavior.Cascade);
-            
+        
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.Movie)
+            .WithMany(x => x.Comments)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder
             .Entity<Genre>().HasData(
@@ -48,5 +58,36 @@ public sealed class Context : DbContext
                         Name = e.ToString()
                     })
             );
+
+        var seedUsers = new List<User>()
+        {
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "useremail@gmail.com",
+                Name = "User",
+                Password = BCrypt.Net.BCrypt.HashPassword("Passw0rd%"),
+                Role = "User"
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "manageremail@gmail.com",
+                Name = "Manager",
+                Password = BCrypt.Net.BCrypt.HashPassword("Passw0rd%"),
+                Role = "Manager"
+            },
+            new User
+            {
+                Id = Guid.NewGuid(),
+                Email = "adminemail@gmail.com",
+                Name = "Admin",
+                Password = BCrypt.Net.BCrypt.HashPassword("Passw0rd%"),
+                Role = "Admin"
+            },
+        };
+
+        modelBuilder
+            .Entity<User>().HasData(seedUsers);
     }
 }

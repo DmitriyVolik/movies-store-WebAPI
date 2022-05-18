@@ -1,6 +1,6 @@
 using Models.Enums;
 
-namespace Models.DTO;
+namespace Models.Models;
 
 public class MovieModel
 {

@@ -1,11 +1,12 @@
+using BLL.Services.Abstractions;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
-using Models.DTO;
 using Models.Exceptions;
+using Models.Models;
 
 namespace BLL.Services;
 
-public class CommentsService
+internal class CommentsService : ICommentsService
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -36,6 +37,12 @@ public class CommentsService
         var comments = _unitOfWork.Comments.GetCommentsByMovieId(id).ToList();
         
         return comments.Select(item => GetCommentModelTree(item, comments)!).ToList();
+    }
+
+    public void DeleteComment(Guid id)
+    {
+        _unitOfWork.Comments.Delete(id);
+        _unitOfWork.Save();
     }
 
     private CommentModel? GetCommentModelTree(Comment? comment, List<Comment> comments)

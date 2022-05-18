@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
 namespace DAL.Entities;
 
@@ -20,4 +19,6 @@ public class Movie
     public Director Director { get; set; }
 
     public DateTime ReleaseDate { get; set; }
+    
+    public IEnumerable<Comment> Comments { get; set; }
 }

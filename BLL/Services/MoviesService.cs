@@ -1,11 +1,12 @@
+using BLL.Services.Abstractions;
 using DAL.Entities;
 using DAL.Repositories.Abstractions;
-using Models.DTO;
 using Models.Enums;
+using Models.Models;
 
 namespace BLL.Services;
 
-public class MoviesService
+internal class MoviesService : IMoviesService
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -44,7 +45,7 @@ public class MoviesService
         _unitOfWork.Save();
     }
 
-    private static MovieModel MovieToModel(Movie movie)
+    public MovieModel MovieToModel(Movie movie)
     {
         var movieModel = new MovieModel
         {
