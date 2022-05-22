@@ -15,7 +15,7 @@ namespace Tests.ControllersTests;
 public class CommentsTests
 {
     [Fact]
-    public void Get_Given_MovieId_Return_Comments()
+    public void Get_ByMovieId_MovieModels()
     {
         var service = A.Fake<ICommentsService>();
         var mapper = A.Fake<IMapper>();
@@ -29,7 +29,7 @@ public class CommentsTests
     }
 
     [Fact]
-    public void Post_Given_CommentRequestViewModel_Return_Status200()
+    public void Post_AddComment_Status200()
     {
         var service = A.Fake<ICommentsService>();
         var comment = A.Fake<CommentRequestViewModel>();
@@ -39,5 +39,19 @@ public class CommentsTests
         var result = controller.Post(comment) as ObjectResult;
 
         result!.StatusCode.Should().Be(200);
+    }
+    
+    [Fact]
+    public void Post_AddComment_Comment()
+    {
+        var service = A.Fake<ICommentsService>();
+        var comment = A.Fake<CommentRequestViewModel>();
+        var mapper = A.Fake<IMapper>();
+        var controller = new CommentsController(service, mapper);
+        
+        var result = controller.Post(comment) as ObjectResult;
+        var value = result!.Value;
+
+        value.Should().BeEquivalentTo(comment);
     }
 }

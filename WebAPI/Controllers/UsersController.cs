@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
 using WebAPI.ActionFilters;
-using WebAPI.Authorization.Services;
+using WebAPI.Authorization.Abstractions;
 using WebAPI.Extensions;
 using WebAPI.ViewModels;
 
@@ -22,9 +22,9 @@ public class UsersController : ControllerBase
     
     private readonly IMapper _mapper;  
     
-    private readonly JwtService _jwtService;
+    private readonly IJwtService _jwtService;
 
-    public UsersController(IUsersService usersService, JwtService jwtService, IConfiguration configuration, IMapper mapper)
+    public UsersController(IUsersService usersService, IJwtService jwtService, IConfiguration configuration, IMapper mapper)
     {
         _mapper = mapper;
         _usersService = usersService;

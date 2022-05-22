@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using WebAPI.Authorization.Abstractions;
 using WebAPI.Authorization.Handlers;
 using WebAPI.Authorization.Requirements;
 using WebAPI.Authorization.Services;
@@ -65,7 +66,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddSingleton<IAuthorizationHandler, ClaimAuthorizationHandler>();
 builder.Services.AddDalServices(builder.Configuration);
 builder.Services.AddBllServices();
-builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

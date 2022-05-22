@@ -13,7 +13,7 @@ namespace Tests.ControllersTests;
 public class MoviesTests
 {
     [Fact]
-    public void Get_Return_Movies()
+    public void Get_Movies_MovieModels()
     {
         var service = A.Fake<IMoviesService>();
         var movies = A.CollectionOfDummy<MovieModel>(10);
@@ -26,21 +26,34 @@ public class MoviesTests
     }
     
     [Fact]
-    public void Get_Given_Id_Return_Movie()
+    public void Get_MovieById_MovieModel()
     {
         var service = A.Fake<IMoviesService>();
         var movie = A.Dummy<MovieModel>();
         A.CallTo(() => service.GetMovieById(Guid.Empty)).Returns(movie);
         var controller = new MoviesController(service);
         
-        var okResult = controller.Get(Guid.Empty) as OkObjectResult;
-        var result = okResult!.Value;
+        var result = controller.Get(Guid.Empty) as ObjectResult;
+        var value = result!.Value;
 
-        result.Should().BeEquivalentTo(result);
+        value.Should().BeEquivalentTo(movie);
     }
     
     [Fact]
-    public void Get_Given_ById_Movie_Return_Status404()
+    public void Get_MovieById_Status200()
+    {
+        var service = A.Fake<IMoviesService>();
+        var movie = A.Dummy<MovieModel>();
+        A.CallTo(() => service.GetMovieById(Guid.Empty)).Returns(movie);
+        var controller = new MoviesController(service);
+        
+        var result = controller.Get(Guid.Empty) as ObjectResult;
+
+        result!.StatusCode.Should().Be(200);
+    }
+    
+    [Fact]
+    public void Get_MovieById_Status404()
     {
         var service = A.Fake<IMoviesService>();
         A.CallTo(() => service.GetMovieById(Guid.Empty)).Returns(null);
@@ -52,7 +65,7 @@ public class MoviesTests
     }
     
     [Fact]
-    public void Post_Given_MovieModel_Return_Status200()
+    public void Post_AddMovie_Status200()
     {
         var service = A.Fake<IMoviesService>();
         var movie = A.Dummy<MovieModel>();
@@ -64,7 +77,20 @@ public class MoviesTests
     }
     
     [Fact]
-    public void Patch_Given_Id_MovieModel_Return_Status200()
+    public void Post_AddMovie_MovieModel()
+    {
+        var service = A.Fake<IMoviesService>();
+        var movie = A.Dummy<MovieModel>();
+        var controller = new MoviesController(service);
+        
+        var result = controller.Post(movie) as ObjectResult;
+        var value = result!.Value;
+
+        value.Should().BeEquivalentTo(movie);
+    }
+    
+    [Fact]
+    public void Patch_UpdateMovie_Status200()
     {
         var service = A.Fake<IMoviesService>();
         var movie = A.Dummy<MovieModel>();
@@ -73,5 +99,18 @@ public class MoviesTests
         var result = controller.Patch(Guid.Empty, movie) as ObjectResult;
 
         result!.StatusCode.Should().Be(200);
+    }
+    
+    [Fact]
+    public void Patch_UpdateMovie_MovieModel()
+    {
+        var service = A.Fake<IMoviesService>();
+        var movie = A.Dummy<MovieModel>();
+        var controller = new MoviesController(service);
+        
+        var result = controller.Patch(Guid.Empty, movie) as ObjectResult;
+        var value = result!.Value;
+
+        value.Should().BeEquivalentTo(movie);
     }
 }
