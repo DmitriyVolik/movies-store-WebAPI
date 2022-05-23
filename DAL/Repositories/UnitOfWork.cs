@@ -9,7 +9,7 @@ internal class UnitOfWork : IUnitOfWork
 {
     private readonly Context _context;
 
-    private MovieRepository _moviesRepository;
+    private MoviesRepository _moviesesRepository;
 
     private CommentsRepository _commentsRepository;
 
@@ -26,9 +26,9 @@ internal class UnitOfWork : IUnitOfWork
     {
         get
         {
-            if (_moviesRepository == null) _moviesRepository = new MovieRepository(_context);
+            if (_moviesesRepository == null) _moviesesRepository = new MoviesRepository(_context);
 
-            return _moviesRepository;
+            return _moviesesRepository;
         }
     }
 

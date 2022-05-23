@@ -10,10 +10,10 @@ using Xunit;
 
 namespace Tests.ControllersTests;
 
-public class MoviesTests
+public class MoviesControllerTests
 {
     [Fact]
-    public void Get_Movies_MovieModels()
+    public void Get_AllMovies_MovieModels()
     {
         var service = A.Fake<IMoviesService>();
         var movies = A.CollectionOfDummy<MovieModel>(10);

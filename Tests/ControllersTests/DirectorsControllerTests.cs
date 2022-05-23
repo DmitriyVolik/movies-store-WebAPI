@@ -8,7 +8,7 @@ using FluentAssertions;
 
 namespace Tests.ControllersTests;
 
-public class DirectorsTests
+public class DirectorsControllerTests
 {
     [Fact]
     public void Post_AddDirector_Status200()

@@ -17,7 +17,7 @@ using Xunit;
 
 namespace Tests.ControllersTests;
 
-public class UsersTests
+public class UsersControllerTests
 {
     [Fact]
     public void Get_Users_UserModels()

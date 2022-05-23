@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Tests.ControllersTests;
 
-public class CommentsTests
+public class CommentsControllerTests
 {
     [Fact]
     public void Get_ByMovieId_MovieModels()

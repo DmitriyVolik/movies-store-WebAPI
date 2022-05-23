@@ -1,9 +1,12 @@
+using System.Runtime.CompilerServices;
 using DAL.DB;
 using DAL.Repositories;
 using DAL.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+[assembly:InternalsVisibleTo("Tests")]
 
 namespace DAL;
 

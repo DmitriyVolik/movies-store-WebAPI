@@ -3,9 +3,6 @@ using DAL.Entities;
 using DAL.Repositories.Abstractions;
 using Models.Exceptions;
 using Models.Models;
-using System.Runtime.CompilerServices;
-
-[assembly:InternalsVisibleTo("Tests")]
 
 namespace BLL.Services;
 
