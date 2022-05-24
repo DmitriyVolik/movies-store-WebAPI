@@ -16,10 +16,10 @@ namespace Tests.RepositoriesTests;
 public class MoviesRepositoryTests
 {
     [Fact]
-    public void Add_CorrectMovie_CorrectMovieInDb()
+    public void Add_CorrectMovie_MovieWithCorrectId()
     {
         var options = new DbContextOptionsBuilder<Context>()
-            .UseInMemoryDatabase("MoviesFakeDbForAdd")
+            .UseInMemoryDatabase("MoviesFakeDbForAddCorrectId")
             .Options;
         using var context = new Context(options);
         context.Directors.Add(Director);
@@ -30,7 +30,39 @@ public class MoviesRepositoryTests
         context.SaveChanges();
 
         context.Movies.First().Id.Should().NotBeEmpty();
+    }
+    
+    [Fact]
+    public void Add_CorrectMovie_MovieWithCorrectDirector()
+    {
+        var options = new DbContextOptionsBuilder<Context>()
+            .UseInMemoryDatabase("MoviesFakeDbForAddCorrectDirector")
+            .Options;
+        using var context = new Context(options);
+        context.Directors.Add(Director);
+        context.SaveChanges();
+        var repository = new MoviesRepository(context);
+        
+        repository.Add(_movieModel);
+        context.SaveChanges();
+
         context.Movies.First().Director.Should().BeEquivalentTo(Director);
+    }
+    
+    [Fact]
+    public void Add_CorrectMovie_MovieWithCorrectGenres()
+    {
+        var options = new DbContextOptionsBuilder<Context>()
+            .UseInMemoryDatabase("MoviesFakeDbForAddCorrectGenres")
+            .Options;
+        using var context = new Context(options);
+        context.Directors.Add(Director);
+        context.SaveChanges();
+        var repository = new MoviesRepository(context);
+        
+        repository.Add(_movieModel);
+        context.SaveChanges();
+
         context.Movies.First().Genres.Count.Should().Be(_movieModel.Genres.Count);
     }
     
@@ -59,9 +91,15 @@ public class MoviesRepositoryTests
         context.Directors.Add(Director);
         context.SaveChanges();
         var repository = new MoviesRepository(context);
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
-            repository.Add(_movieModel);
+            context.Movies.Add(new Movie
+            {
+                Description = "Description",
+                Title = "Title",
+                Id = Guid.NewGuid(),
+                Director = Director
+            });
         }
         context.SaveChanges();
 
@@ -162,7 +200,8 @@ public class MoviesRepositoryTests
         repository.Delete(_movie.Id);
         context.SaveChanges();
 
-        repository.GetById(_movie.Id).Should().BeNull();
+        context.Movies.FirstOrDefault(x=>x.Id == _movie.Id)
+            .Should().BeNull();
     }
     
     [Fact]

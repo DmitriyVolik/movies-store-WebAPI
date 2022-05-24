@@ -26,7 +26,7 @@ public class MoviesControllerTests
     }
     
     [Fact]
-    public void Get_MovieById_MovieModel()
+    public void Get_MovieByIdCorrect_MovieModel()
     {
         var service = A.Fake<IMoviesService>();
         var movie = A.Dummy<MovieModel>();
@@ -40,7 +40,7 @@ public class MoviesControllerTests
     }
     
     [Fact]
-    public void Get_MovieById_Status200()
+    public void Get_MovieByIdCorrect_Status200()
     {
         var service = A.Fake<IMoviesService>();
         var movie = A.Dummy<MovieModel>();
@@ -53,7 +53,7 @@ public class MoviesControllerTests
     }
     
     [Fact]
-    public void Get_MovieById_Status404()
+    public void Get_MovieByIdIncorrect_Status404()
     {
         var service = A.Fake<IMoviesService>();
         A.CallTo(() => service.GetMovieById(Guid.Empty)).Returns(null);
@@ -65,7 +65,7 @@ public class MoviesControllerTests
     }
     
     [Fact]
-    public void Post_AddMovie_Status200()
+    public void Post_AddMovieCorrect_Status200()
     {
         var service = A.Fake<IMoviesService>();
         var movie = A.Dummy<MovieModel>();

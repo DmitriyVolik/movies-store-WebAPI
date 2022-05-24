@@ -13,7 +13,7 @@ namespace Tests.RepositoriesTests;
 public class UsersRepositoryTests
 {
     [Fact]
-    public void Add_CorrectUser_CorrectUserInDb()
+    public void Add_CorrectUser_UserWithCorrectId()
     {
         var options = new DbContextOptionsBuilder<Context>()
             .UseInMemoryDatabase("UsersFakeDbForAdd")
@@ -26,7 +26,37 @@ public class UsersRepositoryTests
 
         var user = context.Users.First();
         user.Id.Should().NotBeEmpty();
+    }
+    
+    [Fact]
+    public void Add_CorrectUser_UserWithCorrectRole()
+    {
+        var options = new DbContextOptionsBuilder<Context>()
+            .UseInMemoryDatabase("UsersFakeDbForAdd")
+            .Options;
+        using var context = new Context(options);
+        var repository = new UsersRepository(context);
+        
+        repository.Add(_user);
+        context.SaveChanges();
+
+        var user = context.Users.First();
         user.Role.Should().Be("User");
+    }
+    
+    [Fact]
+    public void Add_CorrectUser_UserPasswordHash()
+    {
+        var options = new DbContextOptionsBuilder<Context>()
+            .UseInMemoryDatabase("UsersFakeDbForAdd")
+            .Options;
+        using var context = new Context(options);
+        var repository = new UsersRepository(context);
+        
+        repository.Add(_user);
+        context.SaveChanges();
+
+        var user = context.Users.First();
         user.Password.Should().StartWith("$2a");
     }
     

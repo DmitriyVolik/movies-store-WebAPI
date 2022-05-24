@@ -36,7 +36,7 @@ public class UsersControllerTests
     }
 
     [Fact]
-    public void Post_AddUser_Status200()
+    public void Post_AddUserCorrect_Status200()
     {
         var service = A.Fake<IUsersService>();
         var jwt = A.Fake<IJwtService>();
@@ -67,7 +67,7 @@ public class UsersControllerTests
     }
     
     [Fact]
-    public void Login_IncorrectPassword_Status200()
+    public void Login_IncorrectPassword_Status401()
     {
         var service = A.Fake<IUsersService>();
         var jwt = A.Fake<IJwtService>();

@@ -69,21 +69,21 @@ public class UsersServiceTests
         new User
         {
             Id = Guid.NewGuid(),
-            Email = "email@example.com",
+            Email = "email1@example.com",
             Name = "Name",
             Password = "Passw0rd%",
         },
         new User
         {
             Id = Guid.NewGuid(),
-            Email = "email@example.com",
+            Email = "email2@example.com",
             Name = "Name",
             Password = "Passw0rd%",
         },
         new User
         {
             Id = Guid.NewGuid(),
-            Email = "email@example.com",
+            Email = "email3@example.com",
             Name = "Name",
             Password = "Passw0rd%",
         },
