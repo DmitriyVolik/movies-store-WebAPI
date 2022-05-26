@@ -13,75 +13,27 @@ namespace Tests.ServicesTests;
 
 public class CommentsServiceTests
 {
-    [Fact]
-    public void AddComment_ChangeCommentBody_Correct()
-    {
-        var unitOfWork = A.Fake<IUnitOfWork>();
-        var comment = A.Dummy<Comment>();
-        var parentComment = A.Dummy<Comment>();
-        parentComment.Username = "Name";
-        comment.ParentId = Guid.Empty;
-        comment.Body = "Body";
-        A.CallTo(() => unitOfWork.Comments.GetById(Guid.Empty)).Returns(parentComment);
-        var service = new CommentsService(unitOfWork);
-        
-        service.AddComment(comment);
-
-        comment.Body.Should().Contain("["+ parentComment.Username + "]");
-    }
+    private readonly IUnitOfWork _unitOfWork;
     
-    [Fact]
-    public void AddComment_IncorrectParentId_IncorrectDataException()
-    {
-        var unitOfWork = A.Fake<IUnitOfWork>();
-        var comment = A.Dummy<Comment>();
-        comment.ParentId = Guid.Empty;
-        comment.Body = "Body";
-        A.CallTo(() => unitOfWork.Comments.GetById(Guid.Empty)).Returns(null);
-        var service = new CommentsService(unitOfWork);
-        
-        var act = () => service.AddComment(comment);
-
-        act.Should().Throw<IncorrectDataException>()
-            .WithMessage("Incorrect parentId");
-    }
+    private readonly Comment _comment;
     
-    [Fact]
-    public void AddComment_IncorrectParentMovieId_IncorrectDataException()
+    private readonly Comment _parentComment;
+
+    private readonly CommentsService _service;
+
+    private readonly IList<Comment> _comments;
+
+    private readonly List<Comment> _commentsTree;
+
+    public CommentsServiceTests()
     {
-        var unitOfWork = A.Fake<IUnitOfWork>();
-        var comment = A.Dummy<Comment>();
-        var parentComment = A.Dummy<Comment>();
-        comment.MovieId = Guid.NewGuid();
-        comment.ParentId = Guid.Empty;
-        comment.Body = "Body";
-        A.CallTo(() => unitOfWork.Comments.GetById(Guid.Empty)).Returns(parentComment);
-        var service = new CommentsService(unitOfWork);
-        
-        var act = () => service.AddComment(comment);
-
-        act.Should().Throw<IncorrectDataException>()
-            .WithMessage("movie_id is different from parent");
-    }
-
-    [Fact]
-    public void GetCommentsByMovieId_WithoutTree_CommentModels()
-    {
-        var unitOfWork = A.Fake<IUnitOfWork>();
-        var comments = A.CollectionOfDummy<Comment>(10);
-        A.CallTo(() => unitOfWork.Comments.GetCommentsByMovieId(Guid.Empty)).Returns(comments);
-        var service = new CommentsService(unitOfWork);
-
-        var result = service.GetCommentsByMovieId(Guid.Empty);
-
-        result.Count().Should().Be(comments.Count);
-    }
-    
-    [Fact]
-    public void GetCommentsByMovieId_WithTree_CommentModels()
-    {
-        var unitOfWork = A.Fake<IUnitOfWork>();
-        var comments = new List<Comment>()
+        _unitOfWork = A.Fake<IUnitOfWork>();
+        _comment = A.Dummy<Comment>();
+        _comment.Body = "Body";
+        _parentComment = A.Dummy<Comment>();
+        _service = new CommentsService(_unitOfWork);
+        _comments = A.CollectionOfDummy<Comment>(10);
+        _commentsTree = new List<Comment>()
         {
             new Comment
             {
@@ -104,10 +56,60 @@ public class CommentsServiceTests
                 ParentId = Guid.Parse("00000000-0000-0000-0000-000000000003"),
             },
         };
-        A.CallTo(() => unitOfWork.Comments.GetCommentsByMovieId(Guid.Empty)).Returns(comments);
-        var service = new CommentsService(unitOfWork);
+        A.CallTo(() => _unitOfWork.Comments.GetCommentsByMovieId(Guid.Empty)).Returns(_comments);
+        A.CallTo(() => _unitOfWork.Comments.GetById(Guid.Empty)).Returns(_parentComment);
+    }
+    
+    [Fact]
+    public void AddComment_ChangeCommentBody_Correct()
+    {
+        _parentComment.Username = "Name";
+        _comment.ParentId = Guid.Empty;
 
-        var result = service.GetCommentsByMovieId(Guid.Empty).ToList();
+        _service.AddComment(_comment);
+
+        _comment.Body.Should().Contain("["+ _parentComment.Username + "]");
+    }
+    
+    [Fact]
+    public void AddComment_IncorrectParentId_IncorrectDataException()
+    {
+        _comment.ParentId = Guid.Empty;
+        A.CallTo(() => _unitOfWork.Comments.GetById(Guid.Empty)).Returns(null);
+
+        var act = () => _service.AddComment(_comment);
+
+        act.Should().Throw<IncorrectDataException>()
+            .WithMessage("Incorrect parentId");
+    }
+    
+    [Fact]
+    public void AddComment_IncorrectParentMovieId_IncorrectDataException()
+    {
+        _comment.MovieId = Guid.NewGuid();
+        _comment.ParentId = Guid.Empty;
+
+        var act = () => _service.AddComment(_comment);
+
+        act.Should().Throw<IncorrectDataException>()
+            .WithMessage("movie_id is different from parent");
+    }
+
+    [Fact]
+    public void GetCommentsByMovieId_WithoutTree_CommentModels()
+    {
+        var result = _service.GetCommentsByMovieId(Guid.Empty);
+
+        result.Count().Should().Be(_comments.Count);
+    }
+    
+    [Fact]
+    public void GetCommentsByMovieId_WithTree_CommentModels()
+    {
+        A.CallTo(() => _unitOfWork.Comments.GetCommentsByMovieId(Guid.Empty)).Returns(_commentsTree);
+
+        var result = _service.GetCommentsByMovieId(Guid.Empty).ToList();
+        
         var node = result[3];
         for (var i = 0; i < 4; i++)
         {

@@ -3,30 +3,32 @@ using DAL.DB;
 using DAL.Entities;
 using DAL.Repositories;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
+using Tests.RepositoriesTests.Helpers;
 using Xunit;
 
 namespace Tests.RepositoriesTests;
 
 public class DirectorsRepositoryTests
 {
+    private readonly Director _director;
+
+    public DirectorsRepositoryTests()
+    {
+        _director = new Director
+        {
+            FullName = "Director"
+        };
+    }
+
     [Fact]
     public void Add_CorrectDirector_DirectorInDb()
     {
-        var options = new DbContextOptionsBuilder<Context>()
-            .UseInMemoryDatabase("DirectorsFakeDbForAdd")
-            .Options;
-        using var context = new Context(options);
+        using var context = new Context(FakeDb.GetFakeDbOptions("DirectorsFakeDbForAdd"));
         var repository = new DirectorsRepository(context);
-        
+
         repository.Add(_director);
         context.SaveChanges();
 
         context.Directors.First().Should().BeEquivalentTo(_director);
     }
-
-    private readonly Director _director = new Director()
-    {
-        FullName = "Director"
-    };
 }
