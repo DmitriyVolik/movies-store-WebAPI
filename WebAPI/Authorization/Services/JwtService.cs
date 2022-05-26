@@ -3,11 +3,12 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Models.Models;
+using WebAPI.Authorization.Abstractions;
 using WebAPI.Options;
 
 namespace WebAPI.Authorization.Services;
 
-public class JwtService
+public class JwtService : IJwtService
 {
     public object GetJwtResponse(UserModel user, AuthOptions options)
     {

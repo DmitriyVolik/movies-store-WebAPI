@@ -7,11 +7,11 @@ using Models.Models;
 
 namespace DAL.Repositories;
 
-internal class MovieRepository : IRepository<Movie, MovieModel>
+internal class MoviesRepository : IRepository<Movie, MovieModel>
 {
     private readonly Context _context;
 
-    public MovieRepository(Context context)
+    public MoviesRepository(Context context)
     {
         _context = context;
     }
@@ -19,11 +19,11 @@ internal class MovieRepository : IRepository<Movie, MovieModel>
     public void Add(MovieModel movie)
     {
         var director = _context.Directors.FirstOrDefault(x => x.FullName == movie.Director);
-
+        
         if (director is null) throw new IncorrectDataException("Incorrect director");
 
         movie.Id = Guid.NewGuid();
-
+        
         var newMovie = new Movie
         {
             Id = movie.Id,

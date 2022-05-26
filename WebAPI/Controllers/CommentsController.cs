@@ -18,9 +18,9 @@ public class CommentsController : ControllerBase
     
     private readonly IMapper _mapper;
 
-    public CommentsController(ICommentsService moviesService, IMapper mapper)
+    public CommentsController(ICommentsService commentsService, IMapper mapper)
     {
-        _commentsService = moviesService;
+        _commentsService = commentsService;
         _mapper = mapper;
     }
     

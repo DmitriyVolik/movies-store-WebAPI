@@ -25,5 +25,4 @@ public class DirectorsController : ControllerBase
         _directorsService.AddDirector(director);
         return Ok(director);
     }
-
 }

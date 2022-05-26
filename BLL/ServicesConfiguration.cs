@@ -1,6 +1,9 @@
+using System.Runtime.CompilerServices;
 using BLL.Services;
 using BLL.Services.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+
+[assembly:InternalsVisibleTo("Tests")]
 
 namespace BLL;
 
